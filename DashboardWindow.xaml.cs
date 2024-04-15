@@ -23,5 +23,15 @@ namespace ExamSystem
         {
             InitializeComponent();
         }
+
+        private void miSignOut_Click(object sender, RoutedEventArgs e)
+        {
+            //open the new window
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            //close login window
+            Close();
+        }
     }
 }

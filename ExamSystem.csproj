@@ -9,17 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\gamf.png" />
     <None Remove="img\logo.png" />
     <None Remove="img\logo2.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="img\gamf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="img\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="img\logo2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataModel1.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataModel1.edml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
