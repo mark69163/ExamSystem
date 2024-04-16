@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Image x:Name="im00" Grid.Column="0" HorizontalAlignment="Left" Source="/img/logo2.png" Margin="10,0,0,0" Width="90"  />
 
-        <Menu x:Name="mainMenu" Height="30" VerticalAlignment="Center" Margin="100,0,0,0" Background="Wheat">
+        <Menu x:Name="mainMenu" Height="30" VerticalAlignment="Center" Margin="100,0,10,0" Background="Wheat">
 
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
