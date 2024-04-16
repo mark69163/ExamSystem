@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="DataModel1.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
