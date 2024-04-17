@@ -10,16 +10,19 @@
 
   <ItemGroup>
     <None Remove="img\databaseExam.png" />
+    <None Remove="img\defaultUserPicture.png" />
     <None Remove="img\electricalExam.png" />
     <None Remove="img\gamf.png" />
     <None Remove="img\logo.png" />
     <None Remove="img\logo2.png" />
     <None Remove="img\porgrammingExam.png" />
-    <None Remove="porgrammingExam.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="img\databaseExam.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\defaultUserPicture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="img\electricalExam.png">
@@ -41,10 +44,6 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="porgrammingExam.png" />
   </ItemGroup>
 
   <ItemGroup>

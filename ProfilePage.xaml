@@ -5,11 +5,65 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ExamSystem"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="400" d:DesignWidth="800"
       Title="ProfilePage">
 
     <Grid>
-        <TextBlock FontSize="30" Text="This is the Profile page" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="1" x:Name="grProfileExams">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="0" x:Name="grProfileUserInfo" Margin="10" Background="Wheat">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <Image x:Name="imUserPicture" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/img/defaultUserPicture.png" Width="150" Height="150" Margin="10"/>
+
+            <Label Grid.Column="1" Content="Username:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
+            <Label x:Name="lbUserName" Grid.Column="1" Content="B2TN3S"  HorizontalAlignment="Left" Margin="96,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+
+
+            <Label Grid.Column="1" Content="First Name:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,50" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
+            <Label x:Name="lbFirstName" Grid.Column="1" Content="Mark"  HorizontalAlignment="Left" Margin="96,50,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+
+            <Label Grid.Column="1" Content="Last Name:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
+            <Label x:Name="lbLastName" Grid.Column="1" Content="Kovacs"  HorizontalAlignment="Left" Margin="96,80,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+
+            <Label Grid.Column="1" Content="Status:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,110,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
+            <Label x:Name="lbState" Grid.Column="1" Content="Active"  HorizontalAlignment="Left" Margin="96,110,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" x:Name="grUserCourses" Background="Wheat" Margin="10"/>
+
 
     </Grid>
 </Page>
