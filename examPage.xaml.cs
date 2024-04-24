@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,19 +16,13 @@ using System.Windows.Shapes;
 namespace ExamSystem
 {
     /// <summary>
-    /// Interaction logic for ExamsPage.xaml
+    /// Interaction logic for examPage.xaml
     /// </summary>
-    public partial class ExamsPage : Page
+    public partial class examPage : Page
     {
-        public ExamsPage()
+        public examPage()
         {
             InitializeComponent();
-        }
-
-        private void btExamStart0_Click(object sender, RoutedEventArgs e)
-        {
-            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageFunctionUri);
         }
     }
 }

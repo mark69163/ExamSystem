@@ -48,8 +48,10 @@ namespace ExamSystem
 
         private void miQuestion_Click(object sender, RoutedEventArgs e)
         {
+           
             frDashboard.Source = new Uri("ExamsPage.xaml", UriKind.Relative);
 
         }
+
     }
 }
