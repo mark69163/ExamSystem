@@ -31,5 +31,17 @@ namespace ExamSystem
             Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
             this.NavigationService.Navigate(pageFunctionUri);
         }
+
+        private void btExamStart1_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
+            this.NavigationService.Navigate(pageFunctionUri);
+        }
+
+        private void btExamStart2_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
+            this.NavigationService.Navigate(pageFunctionUri);
+        }
     }
 }
