@@ -24,5 +24,10 @@ namespace ExamSystem
         {
             InitializeComponent();
         }
+
+        private void btAnswer0_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
