@@ -33,5 +33,25 @@ namespace ExamSystem
             //close login window
             Close();
         }
+
+        private void miHelp_Click(object sender, RoutedEventArgs e)
+        {
+            frDashboard.Source = new Uri("HelpPage.xaml",UriKind.Relative);
+           
+        }
+
+        private void miProfile_Click(object sender, RoutedEventArgs e)
+        {
+            frDashboard.Source = new Uri("ProfilePage.xaml", UriKind.Relative);
+
+        }
+
+        private void miQuestion_Click(object sender, RoutedEventArgs e)
+        {
+           
+            frDashboard.Source = new Uri("ExamsPage.xaml", UriKind.Relative);
+
+        }
+
     }
 }

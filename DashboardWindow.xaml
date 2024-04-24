@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExamSystem"
         mc:Ignorable="d"
-        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png">
+        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png" ResizeMode="CanMinimize">
     <Grid>
 
 
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+
         </Grid.RowDefinitions>
         <Image x:Name="im00" Grid.Column="0" HorizontalAlignment="Left" Source="/img/logo2.png" Margin="10,0,0,0" Width="90"  />
 
-        <Menu x:Name="mainMenu" Height="30" VerticalAlignment="Center" Margin="100,0,0,0" Background="Wheat">
+        <Menu x:Name="mainMenu" Height="30" VerticalAlignment="Center" Margin="100,0,10,0" Background="Wheat">
 
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -24,15 +25,16 @@
 
             </Menu.ItemsPanel>
 
-            <MenuItem Header="Exams" x:Name="miQuestion" VerticalAlignment="Center"/>
-            <MenuItem Header="Help" x:Name="miHelp" VerticalAlignment="Center"/>
-            <MenuItem Header="Profile" x:Name="miProfile" VerticalAlignment="Center" />
+            <MenuItem Header="Exams" x:Name="miExams" VerticalAlignment="Top" Margin="0,6,0,0" Click="miQuestion_Click"/>
+            <MenuItem Header="Help" x:Name="miHelp" VerticalAlignment="Bottom" Margin="0,0,0,6" Click="miHelp_Click"/>
+            <MenuItem Header="Profile" x:Name="miProfile" VerticalAlignment="Center" Click="miProfile_Click" />
             <MenuItem Header="Sign out" x:Name="miSignOut" VerticalAlignment="Center" Click="miSignOut_Click" />
 
 
 
         </Menu>
 
+        <Frame x:Name="frDashboard" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Source="/ExamsPage.xaml" />
 
     </Grid>
 </Window>
