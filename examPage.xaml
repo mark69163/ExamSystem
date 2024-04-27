@@ -79,26 +79,26 @@
 
 
                 <Button x:Name="btAnswer0" Grid.Column="0" Grid.Row="0" FontSize="30" FontWeight="Bold" Margin="20,20,5,5" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer0_Click" Grid.RowSpan="3">
-                    <TextBlock x:Name="tbAnswer0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">H-BRIDGE</TextBlock>
+                    <TextBlock x:Name="tbAnswer0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
                 </Button>
 
                 <Button x:Name="btAnswer1" Grid.Column="1" Grid.Row="0"  FontSize="30" FontWeight="Bold" Margin="5,20,20,5" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="3" Click="btAnswer1_Click">
-                    <TextBlock x:Name="tbAnswer1" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap">TRI-STATE BUFFER</TextBlock>
+                    <TextBlock x:Name="tbAnswer1" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
                 <Button x:Name="btAnswer2" Grid.Column="0" Grid.Row="3"  FontSize="30" FontWeight="Bold" Margin="20,5,5,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer2_Click">
-                    <TextBlock x:Name="tbAnswer2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap">OPERATIONAL AMPLIFIER</TextBlock>
+                    <TextBlock x:Name="tbAnswer2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
                 <Button x:Name="btAnswer3" Grid.Column="1" Grid.Row="3" FontSize="30" FontWeight="Bold" Margin="5,5,20,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer3_Click">
-                    <TextBlock x:Name="tbAnswer3" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap">SCHMITT TRIGGER</TextBlock>
+                    <TextBlock x:Name="tbAnswer3" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
             </Grid>
 
 
             <Frame x:Name="frExamBottomNavigation" Grid.Row="1" Grid.Column="1" Margin="10,20,10,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <TextBox x:Name="tbQestion" Grid.Row="1" Grid.Column="1" FontSize="18"  Margin="20,30,20,20"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White" Text="Which electronic component disconnects a pin from the bus?"/>
+            <TextBox x:Name="tbQestion" Grid.Row="1" Grid.Column="1" FontSize="18"  Margin="20,30,20,20"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White"/>
 
         </Grid>
 

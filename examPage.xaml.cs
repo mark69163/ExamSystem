@@ -39,7 +39,7 @@ namespace ExamSystem
                                         "What PWM stands for in electronics?"
         };
 
-        private int[] correctAnwers = { 3, 3, 0, 2, 0 };
+        private int[] correctAnwers = { 3, 3, 0, 2, 1 };
 
         private string[] answers0 = { "H-Bridge", "Tri-state Buffer", "Operational Amplifier", "Schmitt Trigger" };
         private string[] answers1 = { "NOR", "XNOR", "AND", "XAND" };
@@ -98,29 +98,30 @@ namespace ExamSystem
         public examPage()
         {
             InitializeComponent();
-            fillQuestions();
-
-            mixQuestionOrder();
 
             answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
+
+            fillQuestions();
+            mixQuestionOrder();
+            displayQuestion();
+
         }
 
 
         private void mixQuestionOrder() {
             List<Question> mixedQuestions = new List<Question>(Questions);
             
-            Random rnd = new Random();
             int itemsToMix = mixedQuestions.Count;
 
             Questions.Clear();
 
             for (int i = 0; i < itemsToMix; i++) {
-               int index = rnd.Next(0, mixedQuestions.Count);
+                Random rnd = new Random();
+
+                int index = rnd.Next(0, mixedQuestions.Count);
                Questions.Add(mixedQuestions[index]);
                mixedQuestions.RemoveAt(index);
             }
-
-            //Console.WriteLine();
 
         }
 
