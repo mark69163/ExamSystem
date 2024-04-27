@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace ExamSystem
 {
@@ -16,6 +17,21 @@ namespace ExamSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        private void userAuthentication() {
+            if (tbUsername.Text.ToUpper() == "ADMIN" && pbPassword.Password.ToUpper() == "ADMIN")
+            {
+                //open the new window
+                DashboardWindow dashboardWindow = new DashboardWindow();
+                dashboardWindow.Show();
+
+                //close login window
+                Close();
+            }
+            else
+            {
+                lbLoginError.Visibility = Visibility.Visible;
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -23,16 +39,23 @@ namespace ExamSystem
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            /*authenttication code here*/
-            //if authetntication passes, then upon clicking the login button close the current form and open the "main" window
+            userAuthentication();
 
-            //open the new window
-            DashboardWindow dashboardWindow = new DashboardWindow();
-            dashboardWindow.Show();
+        }
 
-            //close login window
-            Close();
+        private void pbPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return) {
+                userAuthentication();
+            }
+        }
 
+        private void tbUsername_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                userAuthentication();
+            }
         }
     }
 }

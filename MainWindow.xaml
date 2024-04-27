@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ExamSystem"
         mc:Ignorable="d"
         Title="NJE Exam System Login" Height="350" Width="400" Icon="/img/gamf.png" ResizeMode="CanMinimize">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -28,12 +28,13 @@
 
             <Label x:Name="lbUsername" Grid.Column="0" Grid.Row="1" Margin="10,0,0,51" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Username" FontSize="16" Grid.RowSpan="2"/>
             <Label x:Name="lbPassword" Grid.Column="0" Grid.Row="3" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Password" FontSize="16"/>
+            <Label x:Name="lbLoginError" Grid.Column="0" Grid.Row="5" Margin="0,15,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Invalid Username or Password!" FontSize="15" Padding="0" Width="250" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Foreground="Red" Visibility="Hidden" />
 
-            <Button x:Name="btLogin" Grid.Column="0" Grid.Row="5" Margin="15,0,0,15" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Login" FontSize="12" Padding="5" Width="80" BorderThickness="0" Background="Orange" RenderTransformOrigin="0.544,-0.04" Click="btLogin_Click"/>
+            <Button x:Name="btLogin" Grid.Column="0" Grid.Row="5" Margin="15,15,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Login" FontSize="12" Padding="5" Width="80" BorderThickness="0" Background="Orange" RenderTransformOrigin="0.544,-0.04" Click="btLogin_Click"/>
 
-            <TextBox x:Name="tbUsername" Grid.Column="0" Grid.Row="2" Margin="15,0,15,10" FontSize="20" TextAlignment="Left" />
+            <TextBox x:Name="tbUsername" Grid.Column="0" Grid.Row="2" Margin="15,0,15,10" FontSize="20" TextAlignment="Left" KeyUp="tbUsername_KeyUp" />
 
-            <PasswordBox x:Name="pbPassword" Grid.Column="0" Grid.Row="4" Margin="15,0,15,10" FontSize="20"/>
+            <PasswordBox x:Name="pbPassword" Grid.Column="0" Grid.Row="4" Margin="15,0,15,10" FontSize="20" KeyUp="pbPassword_KeyUp" />
 
         </Grid>
 
