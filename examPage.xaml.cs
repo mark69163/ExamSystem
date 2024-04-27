@@ -27,6 +27,11 @@ namespace ExamSystem
         public int correctCounter = 0;
 
 
+
+        /* /////////////////////////////// Test data setup ////////////////////////////////////////// */
+
+        #region Test_data_setup
+
         private string[] questions = {  "Which electronic component disconnects a pin from the bus?",
                                         "Which logic gate does not exist?",
                                         "What is not included in the Arduino UNO R3 Developer Panel?",
@@ -88,17 +93,34 @@ namespace ExamSystem
             tbQestion.Text = Questions[questionCounter].questionToAnswer;
 
         }
+        #endregion
 
         public examPage()
         {
             InitializeComponent();
             fillQuestions();
 
+            mixQuestionOrder();
+
             answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
         }
 
-        private void mixQuestionOrder() { 
-        
+
+        private void mixQuestionOrder() {
+            List<Question> mixedQuestions = new List<Question>(Questions);
+            
+            Random rnd = new Random();
+            int itemsToMix = mixedQuestions.Count;
+
+            Questions.Clear();
+
+            for (int i = 0; i < itemsToMix; i++) {
+               int index = rnd.Next(0, mixedQuestions.Count);
+               Questions.Add(mixedQuestions[index]);
+               mixedQuestions.RemoveAt(index);
+            }
+
+            //Console.WriteLine();
 
         }
 
@@ -120,12 +142,14 @@ namespace ExamSystem
             bitmap.BeginInit();
 
             // correct answer
-            if (buttonPressed == correctAnwers[questionCounter])
-            {
-                bitmap.UriSource = new Uri("/img/examStateSuccess.png", uriKind: UriKind.Relative);
-                bitmap.EndInit();
+            //if (buttonPressed == correctAnwers[questionCounter])
+            if (buttonPressed == Questions[questionCounter].correctAnswerIndex)
 
-                correctCounter++;
+                {
+                    bitmap.UriSource = new Uri("/img/examStateSuccess.png", uriKind: UriKind.Relative);
+                    bitmap.EndInit();
+
+                    correctCounter++;
 
             }
 
