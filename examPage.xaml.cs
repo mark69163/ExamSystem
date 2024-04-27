@@ -39,7 +39,7 @@ namespace ExamSystem
                                         "What PWM stands for in electronics?"
         };
 
-        private int[] correctAnwers = { 3, 3, 0, 2, 1 };
+        private int[] correctAnwers = { 3, 1, 0, 2, 1 };
 
         private string[] answers0 = { "H-Bridge", "Tri-state Buffer", "Operational Amplifier", "Schmitt Trigger" };
         private string[] answers1 = { "NOR", "XNOR", "AND", "XAND" };

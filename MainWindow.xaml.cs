@@ -35,13 +35,23 @@ namespace ExamSystem
         public MainWindow()
         {
             InitializeComponent();
+
+           
         }
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            userAuthentication();
+            //userAuthentication();
 
+            //authentication bypass
+            DashboardWindow dashboardWindow = new DashboardWindow();
+            dashboardWindow.Show();
+
+            //close login window
+            Close();
         }
+
+    
 
         private void pbPassword_KeyUp(object sender, KeyEventArgs e)
         {
