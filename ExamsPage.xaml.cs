@@ -21,27 +21,34 @@ namespace ExamSystem
     /// </summary>
     public partial class ExamsPage : Page
     {
+        int correctCounter;
         public ExamsPage()
         {
             InitializeComponent();
+
         }
+
+        
 
         private void btExamStart0_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageFunctionUri);
         }
 
         private void btExamStart1_Click(object sender, RoutedEventArgs e)
         {
             Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageFunctionUri);
+            this.NavigationService.Navigate(pageFunctionUri,correctCounter);
         }
 
         private void btExamStart2_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageFunctionUri);
+
+        }
+
+        private void pbExam1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            pbExam1.Value = correctCounter*20;
+            lbExamPoints1.Content = correctCounter*20;
         }
     }
 }
