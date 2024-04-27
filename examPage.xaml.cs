@@ -102,7 +102,11 @@ namespace ExamSystem
             answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
 
             fillQuestions();
-            mixQuestionOrder();
+            //mixQuestionOrder();
+            //mixAnswerOrder();
+            mixQuestionAndAnswerOrder();
+
+
             displayQuestion();
 
         }
@@ -110,15 +114,15 @@ namespace ExamSystem
 
         private void mixQuestionOrder() {
             List<Question> mixedQuestions = new List<Question>(Questions);
-            
+            Random rnd = new Random();
+
             int itemsToMix = mixedQuestions.Count;
 
             Questions.Clear();
 
             for (int i = 0; i < itemsToMix; i++) {
-                Random rnd = new Random();
 
-                int index = rnd.Next(0, mixedQuestions.Count);
+               int index = rnd.Next(0, mixedQuestions.Count);
                Questions.Add(mixedQuestions[index]);
                mixedQuestions.RemoveAt(index);
             }
@@ -127,9 +131,42 @@ namespace ExamSystem
 
         private void mixAnswerOrder()
         {
+            Random rnd = new Random();
 
+            for (int i = 0; i < Questions.Count; i++)
+            {
+                Question question = Questions[i];
+                string[] mixedAnswers = new string[question.answers.Length];
+                Array.Copy(question.answers, mixedAnswers, question.answers.Length);
 
+                
+                for (int j = mixedAnswers.Length - 1; j > 0; j--)
+                {
+                    int k = rnd.Next(0, j + 1);
+
+                    string temp = mixedAnswers[j];
+                    mixedAnswers[j] = mixedAnswers[k];
+                    mixedAnswers[k] = temp;
+                }
+
+                for (int j = 0; j < mixedAnswers.Length; j++)
+                {
+                    if (mixedAnswers[j] == question.answers[question.correctAnswerIndex])
+                    {
+                        question.correctAnswerIndex = j;
+                        break;
+                    }
+                    
+                }
+
+                for (int j = 0; j < mixedAnswers.Length; j++) {
+                    Questions[i].answers[j]= mixedAnswers[j];
+                }
+
+                Questions[i]=question;
+            }
         }
+
 
         private void mixQuestionAndAnswerOrder()
         {
@@ -143,7 +180,6 @@ namespace ExamSystem
             bitmap.BeginInit();
 
             // correct answer
-            //if (buttonPressed == correctAnwers[questionCounter])
             if (buttonPressed == Questions[questionCounter].correctAnswerIndex)
 
                 {
