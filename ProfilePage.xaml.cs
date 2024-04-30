@@ -30,14 +30,16 @@ namespace ExamSystem
         //string userPictureUri = "/img/userPicture.png";
         private string fileName = "";
         private string sourceFilePath = "";
-        private void loadPorfileData() {
-            if (imUserPicture.Source==null)
+        private void loadPorfileData()
+        {
+            if (imUserPicture.Source == null)
             {
                 imUserPicture.Source = new BitmapImage(new Uri("/img/defaultUserPicture.png", UriKind.Relative));
 
 
             }
-            else {
+            else
+            {
                 imUserPicture.Source = new BitmapImage(new Uri("/img/userPicture.png", UriKind.Relative));
             }
         }
@@ -70,30 +72,30 @@ namespace ExamSystem
         {
             if (imageCahnged)
             {
-                    try
-                    {
-                        string destinationFolder = Path.Combine(Environment.CurrentDirectory, "img");
-                        string destinationPath = Path.Combine(destinationFolder, "userPicture.png");
+                try
+                {
+                    string destinationFolder = Path.Combine(Environment.CurrentDirectory, "img");
+                    string destinationPath = Path.Combine(destinationFolder, "userPicture.png");
 
-                        imUserPictureEdit.Source = null;
-                        imUserPicture.Source = null;
+                    imUserPictureEdit.Source = null;
+                    imUserPicture.Source = null;
 
 
-                        // Copy the new profile picture file to the destination folder
-                        File.Copy(sourceFilePath, destinationPath, true);
-                        Thread.Sleep(1000);
-                        
-                        imUserPicture.Source = new BitmapImage(new Uri(sourceFilePath));
-                        imUserPictureEdit.Source= new BitmapImage(new Uri("/img/addUserPicture.png", UriKind.Relative));
+                    // Copy the new profile picture file to the destination folder
+                    File.Copy(sourceFilePath, destinationPath, true);
+                    Thread.Sleep(1000);
 
-                        //MessageBox.Show("Profile Picture Updated Successfully!");
+                    imUserPicture.Source = new BitmapImage(new Uri(sourceFilePath));
+                    imUserPictureEdit.Source = new BitmapImage(new Uri("/img/addUserPicture.png", UriKind.Relative));
 
+                    //MessageBox.Show("Profile Picture Updated Successfully!");
+                    imageCahnged = true;
                 }
                 catch (IOException ex)
-                    {
-                        MessageBox.Show("Unable to update profile picture. Please try again later.");
+                {
+                    MessageBox.Show("Unable to update profile picture. Please try again later.");
 
-                     }
+                }
 
             }
         }
@@ -105,6 +107,39 @@ namespace ExamSystem
             {
                 imUserPictureEdit.Source = new BitmapImage(new Uri("/img/addUserPicture.png", uriKind: UriKind.Relative));
                 imageCahnged = false;
+            }
+        }
+
+        private void btResetUserPicture_Click(object sender, RoutedEventArgs e)
+        {
+
+            if(imageCahnged){
+                try
+                {
+                    imUserPictureEdit.Source = null;
+                    imUserPicture.Source = null;
+
+
+                    string destinationFolder = Path.Combine(Environment.CurrentDirectory, "img");
+                    string destinationPath = Path.Combine(destinationFolder, "userPicture.png");
+                    sourceFilePath = Path.Combine(destinationFolder, "defaultUserPicture.png");
+
+                    // Copy the new profile picture file to the destination folder
+                    File.Copy(sourceFilePath, destinationPath, true);
+                    Thread.Sleep(1000);
+
+                    imUserPicture.Source = new BitmapImage(new Uri(sourceFilePath));
+                    imUserPictureEdit.Source = new BitmapImage(new Uri("/img/addUserPicture.png", UriKind.Relative));
+
+                    //MessageBox.Show("Profile Picture Updated Successfully!");
+                    imageCahnged = false;
+
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show("Unable to update profile picture. Please try again later.");
+
+                }
             }
         }
     }
