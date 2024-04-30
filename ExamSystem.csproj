@@ -20,6 +20,7 @@
     <None Remove="img\logo.png" />
     <None Remove="img\logo2.png" />
     <None Remove="img\porgrammingExam.png" />
+    <None Remove="img\userPicture.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,9 @@
     </Content>
     <Content Include="img\databaseExam.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\userPicture.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="img\defaultUserPicture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

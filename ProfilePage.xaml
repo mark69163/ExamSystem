@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
 
 
-            <Image x:Name="imUserPicture" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/img/defaultUserPicture.png" Width="150" Height="150" Margin="10"/>
+            <Image x:Name="imUserPicture" Source="/img/userPicture.png" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="150" Margin="10"/>
 
             <Label Grid.Column="1" Content="Username:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
             <Label x:Name="lbUserName" Grid.Column="1" Content="B2TN3S"  HorizontalAlignment="Left" Margin="96,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
