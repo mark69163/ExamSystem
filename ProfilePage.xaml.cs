@@ -46,7 +46,7 @@ namespace ExamSystem
         {
             InitializeComponent();
 
-            loadPorfileData();
+            //loadPorfileData();
         }
 
         private void btUserPictureEdit_Click(object sender, RoutedEventArgs e)
@@ -77,19 +77,16 @@ namespace ExamSystem
 
                         imUserPictureEdit.Source = null;
                         imUserPicture.Source = null;
-                        loadPorfileData();
 
-                        Thread.Sleep(1000);
 
                         // Copy the new profile picture file to the destination folder
                         File.Copy(sourceFilePath, destinationPath, true);
-
-                        // Update imUserPicture and userPictureUri with the new profile picture
+                        Thread.Sleep(1000);
+                        
                         imUserPicture.Source = new BitmapImage(new Uri(sourceFilePath));
-                        //userPictureUri = sourceFilePath;
                         imUserPictureEdit.Source= new BitmapImage(new Uri("/img/addUserPicture.png", UriKind.Relative));
 
-                        MessageBox.Show("Profile Picture Updated Successfully!");
+                        //MessageBox.Show("Profile Picture Updated Successfully!");
 
                 }
                 catch (IOException ex)
