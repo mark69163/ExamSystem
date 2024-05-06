@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Model;
 
 namespace ExamSystem
 {
@@ -22,10 +23,15 @@ namespace ExamSystem
     public partial class ExamsPage : Page
     {
         int correctCounter;
+        Model.Model _context;
         public ExamsPage()
         {
             InitializeComponent();
+            _context = new Model.Model();
 
+            // Adatok betöltése
+            lbExamName1.Content = _context.EXAMs.ToList()[0].title;
+           // foreach(var k in _context.EXAMs.ToList()) Console.WriteLine(k);
         }
 
         
