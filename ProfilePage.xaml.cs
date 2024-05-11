@@ -19,12 +19,14 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Globalization;
 using Path = System.IO.Path;
-
+using Model;
 
 namespace ExamSystem
 {
     public partial class ProfilePage : Page
     {
+        Model.Model _context;
+
 
         private bool imageCahnged = false;
         //string userPictureUri = "/img/userPicture.png";
@@ -32,23 +34,21 @@ namespace ExamSystem
         private string sourceFilePath = "";
         private void loadPorfileData()
         {
-            if (imUserPicture.Source == null)
-            {
-                imUserPicture.Source = new BitmapImage(new Uri("/img/defaultUserPicture.png", UriKind.Relative));
+            lbUserName.Content = _context.STUDENTs.ToList()[0].neptun_id;
+            lbFirstName.Content = _context.STUDENTs.ToList()[0].first_name;
+            lbLastName.Content = _context.STUDENTs.ToList()[0].last_name;
+            lbState.Content = _context.STUDENTs.ToList()[0].user_status;
 
-
-            }
-            else
-            {
-                imUserPicture.Source = new BitmapImage(new Uri("/img/userPicture.png", UriKind.Relative));
-            }
         }
 
         public ProfilePage()
         {
             InitializeComponent();
 
-            //loadPorfileData();
+            _context = new Model.Model();
+
+
+            loadPorfileData();
         }
 
         private void btUserPictureEdit_Click(object sender, RoutedEventArgs e)
