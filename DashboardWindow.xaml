@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExamSystem"
         mc:Ignorable="d"
-        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png" ResizeMode="CanMinimize">
+        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterOwner"
+        >
+    
     <Grid>
 
 

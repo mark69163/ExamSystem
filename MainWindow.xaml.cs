@@ -13,65 +13,28 @@ using System.Xml;
 using System.Globalization;
 using System.Configuration;
 using System.Collections.ObjectModel;
-
+using ExamSystem.Logic;
 
 
 namespace ExamSystem
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    /// 
-
-    class ErrorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var sb = new StringBuilder();
-            var hibak = value as ReadOnlyCollection<ValidationError>;
-            if (hibak != null)
-            {
-                foreach (var e in hibak.Where(e => e.ErrorContent != null))
-                {
-                    sb.AppendLine(e.ErrorContent.ToString());
-                }
-            }
-            return sb.ToString();
-
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class UserNameValidationRule : ValidationRule
-    {
-        public string UserName { get; set; }
-
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            var str = value as string;
-            if (str == null)
-            {
-                return new ValidationResult(false, "Please enter the user name!");
-            }
-            if (UserName.Length != 6)
-            {
-                return new ValidationResult(false, String.Format("The user name must be 6 characters long!"));
-            }
-
-            return new ValidationResult(true, null);
-
-        }
-    }
-
-
-
-
+  
     public partial class MainWindow : Window
     {
+        public LoggedInUser user { get; set; }
+
+        // Define the UserName property
+        public string UserName
+        {
+            get { return (string)GetValue(UserNameProperty); }
+            set { SetValue(UserNameProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for UserName. 
+        // This enables binding.
+        public static readonly DependencyProperty UserNameProperty =
+            DependencyProperty.Register("UserName", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
+
         private void userAuthentication() {
             if (tbUsername.Text.ToUpper() == "ADMIN" && pbPassword.Password.ToUpper() == "ADMIN")
             {
@@ -91,9 +54,10 @@ namespace ExamSystem
         {
             InitializeComponent();
 
-           
+            user = new LoggedInUser();
+            //user.userName = tbUsername.Text;
+            //user.userPassword= pbPassword.Password;
         }
-
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
