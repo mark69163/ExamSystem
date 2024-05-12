@@ -17,7 +17,7 @@
 
         <Grid>
          
-            <ListBox Name="lbQuestions" FontSize="20" Grid.Column="0" SelectionChanged="lbQuestions_SelectionChanged">
+            <ListBox Name="lbQuestions" IsEnabled="False" FontSize="20" Grid.Column="0" SelectionChanged="lbQuestions_SelectionChanged">
             
             </ListBox>
         </Grid>
