@@ -16,46 +16,12 @@
 
 
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" x:Name="grCurrentQuestion"/>
-                <ColumnDefinition Width="10"/>
-            </Grid.ColumnDefinitions>
-
-            <Frame x:Name="frExamMenu0" Grid.Row="0" Grid.Column="0" Margin="10,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <Frame x:Name="frExamMenu1" Grid.Row="1" Grid.Column="0" Margin="10,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <Frame x:Name="frExamMenu2" Grid.Row="2" Grid.Column="0" Margin="10,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <Frame x:Name="frExamMenu3" Grid.Row="3" Grid.Column="0" Margin="10,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-            <Frame x:Name="frExamMenu4" Grid.Row="4" Grid.Column="0" Margin="10,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
-            <Image x:Name="imQuestionState0" Source="/img/examStateUnknown.png" Grid.Column="0" Grid.Row="0" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="30" Height="30"/>
-            <Label Grid.Column="0" Content="1. Question" HorizontalAlignment="Left" Margin="49,0,0,0" VerticalAlignment="Center"  HorizontalContentAlignment="Right" FontSize="20"/>
-            <Frame x:Name="frQuestionSelected0" Grid.Row="0" Grid.Column="1" Margin="0,10,0,10" Padding="10" Background="DarkBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
-            <Image x:Name="imQuestionState1" Grid.Column="0" Grid.Row="1"  Source="/img/examStateUnknown.png" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="30" Height="30"/>
-            <Label Grid.Column="0" Grid.Row="1" Content="2. Question" HorizontalAlignment="Right" Margin="20,0,30,0" VerticalAlignment="Center"  HorizontalContentAlignment="Right" FontSize="20"/>
-            <Frame x:Name="frQuestionSelected1" Grid.Row="1" Grid.Column="1" Margin="0,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
-            <Image x:Name="imQuestionState2" Grid.Column="0" Grid.Row="2"  Source="/img/examStateUnknown.png" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="30" Height="30"/>
-            <Label Grid.Column="0" Grid.Row="2" Content="3. Question" HorizontalAlignment="Right" Margin="20,0,30,0" VerticalAlignment="Center"  HorizontalContentAlignment="Right" FontSize="20"/>
-            <Frame x:Name="frQuestionSelected2" Grid.Row="2" Grid.Column="1" Margin="0,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
-            <Image x:Name="imQuestionState3" Grid.Column="0" Grid.Row="3"  Source="/img/examStateUnknown.png" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="30" Height="30"/>
-            <Label Grid.Column="0" Grid.Row="3" Content="4. Question" HorizontalAlignment="Right" Margin="20,0,30,0" VerticalAlignment="Center"  HorizontalContentAlignment="Right" FontSize="20"/>
-            <Frame x:Name="frQuestionSelected3" Grid.Row="3" Grid.Column="1" Margin="0,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
-            <Image x:Name="imQuestionState4" Grid.Column="0" Grid.Row="4"  Source="/img/examStateUnknown.png" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="30" Height="30"/>
-            <Label Grid.Column="0" Grid.Row="4" Content="5. Question" HorizontalAlignment="Right" Margin="20,0,30,0" VerticalAlignment="Center"  HorizontalContentAlignment="Right" FontSize="20"/>
-            <Frame x:Name="frQuestionSelected4" Grid.Row="4" Grid.Column="1" Margin="0,10,0,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-
+         
+            <ListBox Name="lbQuestions" FontSize="20" Grid.Column="0">
+            
+            </ListBox>
         </Grid>
+
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>

@@ -17,6 +17,7 @@ using ExamSystem.Logic;
 using System.Text.RegularExpressions;
 using Model;
 using System.Security.Cryptography;
+using Microsoft.VisualBasic.ApplicationServices;
 
 
 
@@ -133,9 +134,17 @@ namespace ExamSystem
         }
 
 
+        //login bypass
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
+            User = new LoggedInUser();
+            User.userName = "teststudent";
 
+            DashboardWindow dashboardWindow = new DashboardWindow(User);
+            dashboardWindow.Show();
+
+            //close login window
+            Close();
         }
 
 

@@ -30,7 +30,7 @@ namespace ExamSystem
             _context = new Model.Model();
 
             // Adatok betöltése
-            lbExamName1.Content = _context.EXAMs.ToList()[0].title;
+            lbExamName1.Content = _context.EXAMs.ToList()[4].title;
            // foreach(var k in _context.EXAMs.ToList()) Console.WriteLine(k);
         }
 
@@ -42,8 +42,9 @@ namespace ExamSystem
 
         private void btExamStart1_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageFunctionUri,correctCounter);
+            //Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
+            //this.NavigationService.Navigate(pageFunctionUri,correctCounter);
+            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString()));
         }
 
         private void btExamStart2_Click(object sender, RoutedEventArgs e)

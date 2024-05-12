@@ -37,13 +37,7 @@ namespace ExamSystem
         private string sourceFilePath = "";
         private void loadPorfileData()
         {
-            /*
-            lbUserName.Content = _context.STUDENTs.ToList()[0].neptun_id;
-            lbFirstName.Content = _context.STUDENTs.ToList()[0].first_name;
-            lbLastName.Content = _context.STUDENTs.ToList()[0].last_name;
-            lbState.Content = _context.STUDENTs.ToList()[0].user_status;
-            */
-
+           
             List<STUDENT> students = _context.STUDENTs.ToList();
 
             foreach (STUDENT student in students) {

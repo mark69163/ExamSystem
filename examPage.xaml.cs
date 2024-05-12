@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using Model;
 
 namespace ExamSystem
 {
@@ -26,6 +28,7 @@ namespace ExamSystem
         private int questionCounter = 0;
         public int correctCounter = 0;
 
+        Model.Model _context;
 
 
         /* /////////////////////////////// Test data setup ////////////////////////////////////////// */
@@ -95,21 +98,66 @@ namespace ExamSystem
         }
         #endregion
 
-        public examPage()
+        public examPage(string examName)
         {
             InitializeComponent();
 
+            _context = new Model.Model();
+
+
             answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
 
-            fillQuestions();
+            //fillQuestions();
+
             //mixQuestionOrder();
             //mixAnswerOrder();
-            mixQuestionAndAnswerOrder();
+            //mixQuestionAndAnswerOrder();
 
 
-            displayQuestion();
+            //displayQuestion();
+
+            /*
+            for (int i = 1; i <= 20; i++)
+            {
+                lbQuestions.Items.Add($"Question {i}");
+            }
+
+            */
+
+            //getting the course id
+            int courseId=0;
+            List<EXAM> exams = _context.EXAMs.ToList();
+
+            foreach (EXAM exam in exams) {
+                if (exam.title == examName) { 
+                    courseId = exam.course_id; break;
+                }
+            }
+
+
+            //getting a list of questions
+            List<QUESTION> questions = _context.QUESTIONs.ToList();
+            List<QUESTION> relevantQuestions = new List<QUESTION>();
+
+            foreach(QUESTION question in questions) {
+                if (question.course_id == courseId) { 
+                    relevantQuestions.Add(question);
+                }
+            }
+            questions.Clear();
+
+            for (int i = 1; i <= relevantQuestions.Count; i++)
+            {
+                lbQuestions.Items.Add($"Question {i}");
+            }
+
+
+
+
 
         }
+
+
 
 
         private void mixQuestionOrder() {
@@ -174,6 +222,7 @@ namespace ExamSystem
             mixAnswerOrder();
         }
 
+        /*
         private void moveToNextQuestion(int buttonPressed)
         {
             BitmapImage bitmap = new BitmapImage();
@@ -249,30 +298,32 @@ namespace ExamSystem
 
             displayQuestion();
         }
+        */
 
+        
         private void btAnswer0_Click(object sender, RoutedEventArgs e)
         {
-            moveToNextQuestion(0);
+           // moveToNextQuestion(0);
 
         }
         private void btAnswer1_Click(object sender, RoutedEventArgs e)
         {
-            moveToNextQuestion(1);
+            //moveToNextQuestion(1);
 
         }
 
         private void btAnswer2_Click(object sender, RoutedEventArgs e)
         {
-            moveToNextQuestion(2);
+           // moveToNextQuestion(2);
 
         }
 
         //correct answer
         private void btAnswer3_Click(object sender, RoutedEventArgs e)
         {
-            moveToNextQuestion(3);
+            //moveToNextQuestion(3);
         }
-
+        
 
     }
 }
