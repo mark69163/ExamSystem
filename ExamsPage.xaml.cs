@@ -48,7 +48,7 @@ namespace ExamSystem
         {
             //Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
             //this.NavigationService.Navigate(pageFunctionUri,correctCounter);
-            this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString()));
+            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString()));
         }
 
         private void btExamStart2_Click(object sender, RoutedEventArgs e)

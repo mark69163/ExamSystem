@@ -154,8 +154,8 @@ namespace ExamSystem
             }
 
 
-            mixQuestionOrder();
-
+           mixQuestionOrder();
+           mixAnswerOrder();
         }
 
 
@@ -177,31 +177,58 @@ namespace ExamSystem
                 relevantQuestions.Add(mixedQuestions[index]);
                 mixedQuestions.RemoveAt(index);
             }
-
-
-
-            /*
-            List<Question> mixedQuestions = new List<Question>(Questions);
-            Random rnd = new Random();
-
-            int itemsToMix = mixedQuestions.Count;
-
-            Questions.Clear();
-
-            for (int i = 0; i < itemsToMix; i++) {
-
-               int index = rnd.Next(0, mixedQuestions.Count);
-               Questions.Add(mixedQuestions[index]);
-               mixedQuestions.RemoveAt(index);
-            }
-            */
-
-
-
         }
 
         private void mixAnswerOrder()
         {
+            Random rnd = new Random();
+
+            for (int i = 0; i < relevantQuestions.Count; i++)
+            {
+                QUESTION question = relevantQuestions[i];
+                string[] answers = question.answers.Split(';');
+                string[] mixedAnswers = new string[answers.Length];
+
+                Array.Copy(answers, mixedAnswers, answers.Length);
+
+
+                for (int j = mixedAnswers.Length - 1; j > 0; j--)
+                {
+                    int k = rnd.Next(0, j + 1);
+
+                    string temp = mixedAnswers[j];
+                    mixedAnswers[j] = mixedAnswers[k];
+                    mixedAnswers[k] = temp;
+                }
+
+                for (int j = 0; j < mixedAnswers.Length; j++)
+                {
+                    int solutionIndex = question.solution;
+
+                    if (mixedAnswers[j] == answers[solutionIndex-1])
+                    {
+                        question.solution = j;
+                        break;
+                    }
+
+                }
+
+                // megkavart valaszok visszatoltese
+                string answersString = "";
+                for (int j = 0; j < mixedAnswers.Length; j++)
+                {
+                    answersString += mixedAnswers[j];
+                    answersString += ";";
+                    //relevantQuestions[i].answers[j] = mixedAnswers[j];
+                }
+                answersString = answersString.Substring(0,answersString.Length-1);
+
+                relevantQuestions[i].answers = answersString;
+                relevantQuestions[i] = question;
+            }
+
+
+            /*
             Random rnd = new Random();
 
             for (int i = 0; i < Questions.Count; i++)
@@ -236,6 +263,7 @@ namespace ExamSystem
 
                 Questions[i]=question;
             }
+            */
         }
 
 
