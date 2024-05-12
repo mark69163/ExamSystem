@@ -27,6 +27,8 @@ namespace ExamSystem
     {
         private int questionCounter = 0;
         public int correctCounter = 0;
+        private int courseId = 0;
+
 
         Model.Model _context;
 
@@ -97,12 +99,15 @@ namespace ExamSystem
 
         }
         #endregion
-
+        private string examName;
+        List<QUESTION> relevantQuestions;
         public examPage(string examName)
         {
             InitializeComponent();
 
             _context = new Model.Model();
+
+            this.examName=examName;
 
 
             answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
@@ -116,41 +121,37 @@ namespace ExamSystem
 
             //displayQuestion();
 
-            /*
-            for (int i = 1; i <= 20; i++)
-            {
-                lbQuestions.Items.Add($"Question {i}");
-            }
-
-            */
-
             //getting the course id
-            int courseId=0;
             List<EXAM> exams = _context.EXAMs.ToList();
 
-            foreach (EXAM exam in exams) {
-                if (exam.title == examName) { 
+            foreach (EXAM exam in exams)
+            {
+                if (exam.title == examName)
+                {
                     courseId = exam.course_id; break;
                 }
             }
 
 
-            //getting a list of questions
+            //getting a list of relevant questions
             List<QUESTION> questions = _context.QUESTIONs.ToList();
-            List<QUESTION> relevantQuestions = new List<QUESTION>();
+            this.relevantQuestions = new List<QUESTION>();
 
-            foreach(QUESTION question in questions) {
-                if (question.course_id == courseId) { 
+            foreach (QUESTION question in questions)
+            {
+                if (question.course_id == courseId)
+                {
                     relevantQuestions.Add(question);
                 }
             }
             questions.Clear();
 
+
+            //hozzaadjuk a listboxhoz a kerdeseket
             for (int i = 1; i <= relevantQuestions.Count; i++)
             {
                 lbQuestions.Items.Add($"Question {i}");
             }
-
 
 
 
@@ -222,83 +223,6 @@ namespace ExamSystem
             mixAnswerOrder();
         }
 
-        /*
-        private void moveToNextQuestion(int buttonPressed)
-        {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-
-            // correct answer
-            if (buttonPressed == Questions[questionCounter].correctAnswerIndex)
-
-                {
-                    bitmap.UriSource = new Uri("/img/examStateSuccess.png", uriKind: UriKind.Relative);
-                    bitmap.EndInit();
-
-                    correctCounter++;
-
-            }
-
-            //incorrect answer
-            else
-            {
-                bitmap.UriSource = new Uri("/img/examStateFailed.png", uriKind: UriKind.Relative);
-                bitmap.EndInit();
-            }
-
-            switch (questionCounter)
-            {
-                case 0:
-                    imQuestionState0.Source = bitmap;
-                    frQuestionSelected0.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected1.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 1:
-                    imQuestionState1.Source = bitmap;
-                    frQuestionSelected1.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected2.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 2:
-                    imQuestionState2.Source = bitmap;
-                    frQuestionSelected2.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected3.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 3:
-                    imQuestionState3.Source = bitmap;
-                    frQuestionSelected3.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected4.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 4:
-                    imQuestionState4.Source = bitmap;
-
-                    Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
-                    this.NavigationService.Navigate(pageFunctionUri);
-
-                    break;
-
-                default:
-                    imQuestionState0.Source = bitmap;
-                    frQuestionSelected4.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected0.Background = new SolidColorBrush(Colors.DarkBlue);
-
-                    break;
-            };
-
-            displayQuestion();
-        }
-        */
 
         
         private void btAnswer0_Click(object sender, RoutedEventArgs e)
@@ -323,7 +247,24 @@ namespace ExamSystem
         {
             //moveToNextQuestion(3);
         }
-        
 
+        private void lbQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+       
+
+            //a kivalasztott kerdes fuggvenyeben jelenitjuk meg a kerdeseket
+     
+            tbQestion.Text = relevantQuestions[lbQuestions.SelectedIndex].question;
+
+            string[] answers = relevantQuestions[lbQuestions.SelectedIndex].answers.Split(';');
+
+            tbAnswer0.Text = answers[0];
+            tbAnswer1.Text = answers[1];
+            tbAnswer2.Text = answers[2];
+            tbAnswer3.Text = answers[3];
+
+            
+
+        }
     }
 }
