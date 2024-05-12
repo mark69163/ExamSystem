@@ -181,14 +181,25 @@ namespace ExamSystem
             {
                 if (buttonPressed == relevantQuestions[questionCounter-1].solution)
                 {
-                    correctCounter++;
+                    correctCounter += relevantQuestions[questionCounter - 1].point_value;
 
                 }
                 lbQuestions.SelectedIndex = questionCounter;
             }
 
+
+            //done with exam
             else
             {
+                //get completion precentage
+                int maxScore = 0;
+                foreach (QUESTION question in relevantQuestions) maxScore+=question.point_value;
+
+                int completion = correctCounter / maxScore *100;
+
+
+
+
                 Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
                 this.NavigationService.Navigate(pageFunctionUri);
             }
