@@ -9,7 +9,6 @@ namespace ExamSystem.Logic
     public class LoggedInUser
     {
         public string userName { get; set; }
-        public string userPassword { get; set; }
     }
 }
 

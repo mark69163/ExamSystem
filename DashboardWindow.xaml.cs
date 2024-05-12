@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Globalization;
 using Model;
+using ExamSystem.Logic;
+using Microsoft.VisualBasic.ApplicationServices;
 
 
 
@@ -23,9 +25,13 @@ namespace ExamSystem
     /// </summary>
     public partial class DashboardWindow : Window
     {
-        public DashboardWindow()
+        public LoggedInUser CurrentUser { get; }
+
+        public DashboardWindow(LoggedInUser User)
         {
             InitializeComponent();
+            CurrentUser = User;
+
         }
 
         private void miSignOut_Click(object sender, RoutedEventArgs e)
@@ -46,7 +52,9 @@ namespace ExamSystem
 
         private void miProfile_Click(object sender, RoutedEventArgs e)
         {
-            frDashboard.Source = new Uri("ProfilePage.xaml", UriKind.Relative);
+            frDashboard.Navigate(new ProfilePage(CurrentUser));
+
+            //frDashboard.Source = new Uri("ProfilePage.xaml", UriKind.Relative);
 
         }
 

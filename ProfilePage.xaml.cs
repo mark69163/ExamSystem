@@ -20,12 +20,15 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Globalization;
 using Path = System.IO.Path;
 using Model;
+using ExamSystem.Logic;
 
 namespace ExamSystem
 {
     public partial class ProfilePage : Page
     {
         Model.Model _context;
+
+        public LoggedInUser CurrentUser { get; }
 
 
         private bool imageCahnged = false;
@@ -34,19 +37,34 @@ namespace ExamSystem
         private string sourceFilePath = "";
         private void loadPorfileData()
         {
+            /*
             lbUserName.Content = _context.STUDENTs.ToList()[0].neptun_id;
             lbFirstName.Content = _context.STUDENTs.ToList()[0].first_name;
             lbLastName.Content = _context.STUDENTs.ToList()[0].last_name;
             lbState.Content = _context.STUDENTs.ToList()[0].user_status;
+            */
+
+            List<STUDENT> students = _context.STUDENTs.ToList();
+
+            foreach (STUDENT student in students) {
+                if (student.neptun_id == this.CurrentUser.userName) {
+                    lbUserName.Content = student.neptun_id;
+                    lbFirstName.Content = student.first_name;
+                    lbLastName.Content = student.last_name;
+                    lbState.Content = student.user_status;
+                }
+            }
+          
 
         }
 
-        public ProfilePage()
+        public ProfilePage(LoggedInUser User)
         {
             InitializeComponent();
 
             _context = new Model.Model();
 
+            CurrentUser = User;
 
             loadPorfileData();
         }

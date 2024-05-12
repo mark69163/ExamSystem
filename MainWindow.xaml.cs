@@ -22,7 +22,7 @@ using System.Security.Cryptography;
 
 namespace ExamSystem
 {
-  
+
     public partial class MainWindow : Window
     {
         Model.Model _context;
@@ -48,7 +48,6 @@ namespace ExamSystem
 
             _context = new Model.Model();
 
-            User = new LoggedInUser();
             //user.userName = tbUsername.Text;
             //user.userPassword= pbPassword.Password;
         }
@@ -71,7 +70,8 @@ namespace ExamSystem
             }
         }
 
-        private bool userNameValidaton() {
+        private bool userNameValidaton()
+        {
 
             string userName = tbUsername.Text;
             string userPassword = pbPassword.Password;
@@ -101,11 +101,13 @@ namespace ExamSystem
             }
         }
 
-        private bool userAuthentication() {
+        private bool userAuthentication()
+        {
             List<STUDENT> students = _context.STUDENTs.ToList();
             int counter = 0;
 
-            foreach (STUDENT student in students) {
+            foreach (STUDENT student in students)
+            {
                 string userName = tbUsername.Text.ToUpper();
                 string userPassword = pbPassword.Password;
                 userPassword = HashPassword(userPassword);
@@ -113,11 +115,11 @@ namespace ExamSystem
                 //all good
                 if (userName == student.neptun_id && userPassword == student.hash_password)
                 {
-                    User.userPassword = userPassword;
-                    User.userName = userName;
+                    //User.userPassword = userPassword;
+                    //User.userName = userName;
                     return true;
                 }
-                else if(userName == student.neptun_id)counter ++;
+                else if (userName == student.neptun_id) counter++;
 
 
             }
@@ -133,17 +135,10 @@ namespace ExamSystem
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            //userAuthentication();
 
-            //authentication bypass
-            DashboardWindow dashboardWindow = new DashboardWindow();
-            dashboardWindow.Show();
-
-            //close login window
-            Close();
         }
 
-    
+
 
         private void pbPassword_KeyUp(object sender, KeyEventArgs e)
         {
@@ -153,7 +148,12 @@ namespace ExamSystem
             {
                 if (userAuthentication())
                 {
-                    DashboardWindow dashboardWindow = new DashboardWindow();
+                    User = new LoggedInUser();
+                    User.userName = tbUsername.Text.ToUpper();
+
+
+
+                    DashboardWindow dashboardWindow = new DashboardWindow(User);
                     dashboardWindow.Show();
 
                     //close login window
@@ -168,17 +168,24 @@ namespace ExamSystem
 
             if (e.Key == Key.Return && userNameValidaton())
             {
-                if (userAuthentication()){
-                    DashboardWindow dashboardWindow = new DashboardWindow();
+                if (userAuthentication())
+                {
+                    User = new LoggedInUser();
+                    User.userName = tbUsername.Text.ToUpper();
+
+
+
+                    DashboardWindow dashboardWindow = new DashboardWindow(User);
                     dashboardWindow.Show();
 
                     //close login window
                     Close();
-                }
-            }
-            
-        }
 
+
+                }
+
+            }
+        }
     }
 }
 
