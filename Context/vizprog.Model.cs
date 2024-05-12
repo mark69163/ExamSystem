@@ -78,6 +78,12 @@ namespace Model
             set;
         }
 
+       
+    
+        public virtual DbSet<STUDENT_EXAM> STUDENTs_EXAMs { get; set; }
+
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -96,6 +102,8 @@ namespace Model
 
             RelationshipsMapping(modelBuilder);
             CustomizeMapping(ref modelBuilder);
+
+            modelBuilder.Entity<STUDENT_EXAM>().HasKey(se => new { se.neptun_id, se.course_id });
         }
 
         #region STUDENT Mapping

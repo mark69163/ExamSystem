@@ -97,7 +97,7 @@
         <ProgressBar x:Name="pbExam1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="10" Margin="20,155,0,0" VerticalAlignment="Top" Width="160" Maximum="100" SmallChange="1"  LargeChange="10" Value="0" Visibility="Visible" ValueChanged="pbExam1_ValueChanged" />
         <Image x:Name="imExam1" HorizontalAlignment="Left" Height="90" Margin="20,50,0,0"  VerticalAlignment="Top" Width="90" Grid.Column="1" Grid.Row="0" Source="/img/electricalExam.png" />
         <Label x:Name="lbExamName1" Grid.Column="1" Grid.Row="0" Content="{Binding}" HorizontalAlignment="Left" Margin="20,24,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
-        <Label x:Name="lbExamPoints1" Grid.Column="1" Grid.Row="0" Content="0" HorizontalAlignment="Left" Margin="100,165,0,0" VerticalAlignment="Top" Height="25" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" FontSize="10"/>
+        <Label x:Name="lbExamPoints1" Grid.Column="1" Grid.Row="0" Content="{Binding}" HorizontalAlignment="Left" Margin="100,165,0,0" VerticalAlignment="Top" Height="25" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" FontSize="10"/>
         <Label  Grid.Column="1" Grid.Row="0" Content="Completion [%]:" HorizontalAlignment="Left" Margin="20,165,0,0" VerticalAlignment="Top" Height="25" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" FontSize="10"/>
         <TextBox x:Name="tbExam1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="120,50,0,0" TextWrapping="Wrap" Text="Exam description:" VerticalAlignment="Top" Width="128" Height="90" IsEnabled="False" />
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -33,10 +34,55 @@ namespace ExamSystem
             lbExamName0.Content = _context.EXAMs.ToList()[2].title;
             lbExamName1.Content = _context.EXAMs.ToList()[4].title;
             lbExamName2.Content = _context.EXAMs.ToList()[0].title;
-           // foreach(var k in _context.EXAMs.ToList()) Console.WriteLine(k);
+
+            //jó lenne, de nem működik, mivel az enitity developer nem generalta le
+            //lbExamPoints1.Content = _context.STUDENTs_EXAMs.ToList()[1].result;
+            lbExamPoints1.Content = GetExamResult("B2TN3S",5);
+
+
         }
 
-        
+        public int? GetExamResult(string neptunId, int courseId)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami lekérdezi a vizsga eredményét a megadott hallgató és kurzus azonosító alapján
+            string sql = @"
+        SELECT result
+        FROM STUDENTs_EXAMs
+        WHERE neptun_id = @NeptunId AND course_id = @CourseId";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméterek hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@NeptunId", neptunId);
+                        command.Parameters.AddWithValue("@CourseId", courseId);
+
+                        // SQL parancs végrehajtása és az eredmény olvasása
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            return Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+
+            // Ha nincs eredmény, vagy hiba történt, null értékkel térünk vissza
+            return null;
+        }
+
+
 
         private void btExamStart0_Click(object sender, RoutedEventArgs e)
         {

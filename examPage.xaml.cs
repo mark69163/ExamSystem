@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -195,9 +196,13 @@ namespace ExamSystem
                 int maxScore = 0;
                 foreach (QUESTION question in relevantQuestions) maxScore+=question.point_value;
 
-                int completion = correctCounter / maxScore *100;
+                float completion = correctCounter / maxScore;
 
+                //isert to db
+                // az entity-vel nem mukodik...
 
+                //manual check az 5-ös korzusra (villanytan)
+                UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
 
 
                 Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
@@ -207,6 +212,49 @@ namespace ExamSystem
 
 
         }
+
+        public void UpdateResult(string neptunId, int courseId, int? result)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami frissíti a meglévő rekord eredményét
+            string sql = @"
+        UPDATE STUDENTs_EXAMs
+        SET result = @Result
+        WHERE neptun_id = @NeptunId AND course_id = @CourseId";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméterek hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@NeptunId", neptunId);
+                        command.Parameters.AddWithValue("@CourseId", courseId);
+                        command.Parameters.AddWithValue("@Result", (object)result ?? DBNull.Value); // Kezeljük a NULL értéket ha szükséges
+
+                        // SQL parancs végrehajtása
+                        int affectedRows = command.ExecuteNonQuery();
+                        Console.WriteLine("Affected rows: {0}", affectedRows);
+
+                        // Ellenőrizzük, hogy valóban frissült-e a rekord
+                        if (affectedRows == 0)
+                        {
+                            Console.WriteLine("No record was updated. Please check if the student and course ID are correct.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+        }
+
+
         private void btAnswer0_Click(object sender, RoutedEventArgs e)
         {
             moveToNextQuestion(0);
