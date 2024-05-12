@@ -154,7 +154,7 @@ namespace ExamSystem
             }
 
 
-
+            mixQuestionOrder();
 
         }
 
@@ -162,6 +162,25 @@ namespace ExamSystem
 
 
         private void mixQuestionOrder() {
+
+            List<QUESTION> mixedQuestions = new List<QUESTION>(relevantQuestions);
+            Random rnd = new Random();
+
+            int itemsToMix = mixedQuestions.Count;
+
+            relevantQuestions.Clear();
+
+            for (int i = 0; i < itemsToMix; i++)
+            {
+
+                int index = rnd.Next(0, mixedQuestions.Count);
+                relevantQuestions.Add(mixedQuestions[index]);
+                mixedQuestions.RemoveAt(index);
+            }
+
+
+
+            /*
             List<Question> mixedQuestions = new List<Question>(Questions);
             Random rnd = new Random();
 
@@ -175,6 +194,9 @@ namespace ExamSystem
                Questions.Add(mixedQuestions[index]);
                mixedQuestions.RemoveAt(index);
             }
+            */
+
+
 
         }
 
