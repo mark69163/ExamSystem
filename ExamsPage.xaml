@@ -111,7 +111,7 @@
         <TextBox x:Name="tbExam2" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="120,50,0,0" TextWrapping="Wrap" Text="Exam description:" VerticalAlignment="Top" Width="128" Height="90" IsEnabled="False" />
 
         <Frame x:Name="frExam3" Grid.Row="1" Grid.Column="0" Margin="10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-        <Button x:Name="btExamStart3" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart2_Click" IsEnabled="False"/>
+        <Button x:Name="btExamStart3" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart3_Click" IsEnabled="False"/>
         <ProgressBar x:Name="pbExam3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="10" Margin="20,155,0,0" VerticalAlignment="Top" Width="160" Maximum="100" SmallChange="1"  LargeChange="10" Value="{Binding Mode=OneWay}" Visibility="Visible" />
         <Image x:Name="imExam3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="90" Margin="20,50,0,0"  VerticalAlignment="Top" Width="90"  Source="/img/programmingExam.png" />
         <Label x:Name="lbExamName3" Grid.Column="0" Grid.Row="1" Content="{Binding}" HorizontalAlignment="Left" Margin="20,24,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
@@ -120,7 +120,7 @@
         <TextBox x:Name="tbExam3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="120,50,0,0" TextWrapping="Wrap" Text="Exam description:" VerticalAlignment="Top" Width="128" Height="90" IsEnabled="False" />
 
         <Frame x:Name="frExam4" Grid.Row="1" Grid.Column="1" Margin="10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-        <Button x:Name="btExamStart4" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart2_Click" IsEnabled="False"/>
+        <Button x:Name="btExamStart4" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart4_Click" IsEnabled="False"/>
         <ProgressBar x:Name="pbExam4" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="10" Margin="20,155,0,0" VerticalAlignment="Top" Width="160" Maximum="100" SmallChange="1"  LargeChange="10" Value="{Binding Mode=OneWay}" Visibility="Visible" />
         <Image x:Name="imExam4" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="90" Margin="20,50,0,0"  VerticalAlignment="Top" Width="90"  Source="/img/programmingExam.png" />
         <Label x:Name="lbExamName4" Grid.Column="1" Grid.Row="1" Content="{Binding}" HorizontalAlignment="Left" Margin="20,24,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
@@ -130,7 +130,7 @@
 
 
         <Frame x:Name="frExam5" Grid.Row="1" Grid.Column="2" Margin="10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-        <Button x:Name="btExamStart5" Grid.Column="2" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart2_Click" IsEnabled="False"/>
+        <Button x:Name="btExamStart5" Grid.Column="2" Grid.Row="1" BorderThickness="0" Background="Orange" FontWeight="Bold" Content="Start" HorizontalAlignment="Left" Margin="198,155,0,0" VerticalAlignment="Top" Height="27" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btExamStart5_Click" IsEnabled="False"/>
         <ProgressBar x:Name="pbExam5" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Height="10" Margin="20,155,0,0" VerticalAlignment="Top" Width="160" Maximum="100" SmallChange="1"  LargeChange="10" Value="{Binding Mode=OneWay}" Visibility="Visible" />
         <Image x:Name="imExam5" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Height="90" Margin="20,50,0,0"  VerticalAlignment="Top" Width="90"  Source="/img/programmingExam.png" />
         <Label x:Name="lbExamName5" Grid.Column="2" Grid.Row="1" Content="{Binding}" HorizontalAlignment="Left" Margin="20,24,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>

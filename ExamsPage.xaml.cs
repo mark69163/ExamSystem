@@ -73,7 +73,7 @@ namespace ExamSystem
                         btExamStart.Content = "Finished";
                     }
 
-                    tbExam.Text = String.Format("Level: " + GetExamDetails(id).Level + "\nCredits: " + GetExamDetails(id).KreditValue + "\nTime limit: " + GetExamDetails(id).TimeLimit + " s");
+                    tbExam.Text = String.Format("Level: " + GetExamDetails(id).Level + "\nCredits: " + GetExamDetails(id).KreditValue + "\nTime limit: " + GetExamDetails(id).TimeLimit + " s" + "\nInstructor: " + GetInstructor(id));
                     if (GetExamResult(currentUser.userName, id) != null)
                     {
                         pbExam.Value = int.Parse(GetExamResult(currentUser.userName, id).ToString());
@@ -293,6 +293,51 @@ WHERE course_id = @courseId";
         }
 
 
+        public string GetInstructor(int courseId)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami lekérdezi a vizsga kurzusait a megadott course_id alapján
+            string sql = @"
+SELECT INSTRUCTORs.first_name, INSTRUCTORs.last_name
+FROM EXAMs
+INNER JOIN EXAMs_INSTRUCTORS ON EXAMs.course_id = EXAMs_INSTRUCTORS.course_id
+INNER JOIN INSTRUCTORs ON EXAMs_INSTRUCTORS.profid = INSTRUCTORs.profid
+WHERE EXAMs.course_id = @courseId";
+
+            string instruktor = "unknown";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméter hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@courseId", courseId);
+
+                        // SQL parancs végrehajtása és az eredmény olvasása
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                instruktor = string.Format(reader["first_name"].ToString() + " " + reader["last_name"].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+
+            return instruktor;
+        }
+
+
 
         //lekerdezzuk, hogy milyen eredmeny tartozik adott neptunkodhoz adott viszga eseten
 
@@ -342,25 +387,43 @@ WHERE course_id = @courseId";
         private void btExamStart0_Click(object sender, RoutedEventArgs e)
         {
             //atrianyitas a relevans exam-hez, pl ez az adatb
-            this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString(), currentUser));
+            this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString(), currentUser, GetExamDetails(0).TimeLimit));
 
         }
 
         private void btExamStart1_Click(object sender, RoutedEventArgs e)
         {
           
-            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString(), currentUser));
+            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString(), currentUser, GetExamDetails(1).TimeLimit));
         }
 
         private void btExamStart2_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new examPage(lbExamName2.Content.ToString(), currentUser));
+            this.NavigationService.Navigate(new examPage(lbExamName2.Content.ToString(), currentUser, GetExamDetails(2).TimeLimit));
 
         }
 
         private void pbExam1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
           
+        }
+
+        private void btExamStart5_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new examPage(lbExamName5.Content.ToString(), currentUser, GetExamDetails(5).TimeLimit));
+
+        }
+
+        private void btExamStart4_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new examPage(lbExamName4.Content.ToString(), currentUser, GetExamDetails(4).TimeLimit));
+
+        }
+
+        private void btExamStart3_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new examPage(lbExamName3.Content.ToString(), currentUser, GetExamDetails(3).TimeLimit));
+
         }
     }
 }

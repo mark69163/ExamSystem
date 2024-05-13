@@ -45,7 +45,7 @@ namespace ExamSystem
 
 
         //konstruktor
-        public examPage(string examName, LoggedInUser user)
+        public examPage(string examName, LoggedInUser user, int time_limit)
         {
             InitializeComponent();
 
