@@ -37,7 +37,7 @@
 
         </Menu>
 
-        <Frame x:Name="frDashboard" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Source="/ExamsPage.xaml" />
+        <Frame x:Name="frDashboard" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Initialized="frDashboard_Initialized" />
 
     </Grid>
 </Window>

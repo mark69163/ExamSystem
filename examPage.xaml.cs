@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using ExamSystem.Logic;
 using Model;
 
 namespace ExamSystem
@@ -34,15 +35,18 @@ namespace ExamSystem
         private int courseId = 0;
 
         Model.Model _context;
+        public LoggedInUser currentUser { get; }
+
 
         private string examName;
         List<QUESTION> relevantQuestions;
 
-        public examPage(string examName)
+        public examPage(string examName, LoggedInUser user)
         {
             InitializeComponent();
 
             _context = new Model.Model();
+            currentUser = user;
 
             this.examName=examName;
 
@@ -205,8 +209,10 @@ namespace ExamSystem
                 UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
 
 
-                Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
-                this.NavigationService.Navigate(pageFunctionUri);
+                //Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
+                //this.NavigationService.Navigate(pageFunctionUri);
+                //frExam.Navigate(new ExamsPage(currentUser));
+                this.NavigationService.Navigate(new ExamsPage(currentUser));
             }
 
 

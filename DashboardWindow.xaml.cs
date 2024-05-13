@@ -62,9 +62,14 @@ namespace ExamSystem
         {
             //ExamsPage examsPage = new ExamsPage(3);
 
-            frDashboard.Source = new Uri("ExamsPage.xaml", UriKind.Relative);
-
+            //frDashboard.Source = new Uri("ExamsPage.xaml", UriKind.Relative);
+            frDashboard.Navigate(new ExamsPage(CurrentUser));
         }
 
+        private void frDashboard_Initialized(object sender, EventArgs e)
+        {
+            frDashboard.Navigate(new ExamsPage(CurrentUser));
+
+        }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ExamSystem.Logic;
 using Model;
 
 namespace ExamSystem
@@ -25,10 +26,13 @@ namespace ExamSystem
     {
         int correctCounter;
         Model.Model _context;
-        public ExamsPage()
+        public LoggedInUser currentUser { get; }
+
+        public ExamsPage(LoggedInUser user)
         {
             InitializeComponent();
             _context = new Model.Model();
+            currentUser = user;
 
             // Adatok betöltése
             lbExamName0.Content = _context.EXAMs.ToList()[2].title;
@@ -97,7 +101,7 @@ namespace ExamSystem
 
         private void btExamStart0_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString()));
+            this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString(), currentUser));
 
         }
 
@@ -105,12 +109,12 @@ namespace ExamSystem
         {
             //Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
             //this.NavigationService.Navigate(pageFunctionUri,correctCounter);
-            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString()));
+            this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString(), currentUser));
         }
 
         private void btExamStart2_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new examPage(lbExamName2.Content.ToString()));
+            this.NavigationService.Navigate(new examPage(lbExamName2.Content.ToString(), currentUser));
 
         }
 
