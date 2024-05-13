@@ -77,13 +77,32 @@ namespace ExamSystem
                     if (GetExamResult(currentUser.userName, id) != null)
                     {
                         pbExam.Value = int.Parse(GetExamResult(currentUser.userName, id).ToString());
+                        double progressValue = pbExam.Value;
+                        if (progressValue >= 0 && progressValue <= 50)
+                        {
+                            pbExam.Foreground = Brushes.Red;
+                            lbExamPoints.Foreground = Brushes.Red;
+                        }
+                        else if (progressValue > 40 && progressValue <= 70)
+                        {
+                            pbExam.Foreground = Brushes.Yellow;
+                            lbExamPoints.Foreground = Brushes.Yellow;
+                        }
+                        else
+                        {
+                            pbExam.Foreground = Brushes.Green;
+                            lbExamPoints.Foreground = Brushes.Green;
+                        }
                     }
                     else
                     {
                         pbExam.Value = 0;
                     }
+                    
+
+                   
                     lbExamName.Content = GetExamDetails(id).Title;
-                    lbExamPoints.Content = GetExamResult(currentUser.userName, id);
+                    lbExamPoints.Content = string.Format(GetExamResult(currentUser.userName, id) + "/ 100");
                     imExam.Source = new BitmapImage(new Uri(GetExamDetails(id).imgSource, UriKind.Relative));
 
                     excount++;
