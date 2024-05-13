@@ -3,10 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ExamSystem"
+        xmlns:local="clr-namespace:ExamSystem" xmlns:local1="clr-namespace:ExamSystem.Logic"
         mc:Ignorable="d"
-        Title="NJE Exam System Login" Height="350" Width="400" Icon="/img/gamf.png" ResizeMode="CanMinimize">
-    
+        Title="NJE Exam System Login" Height="350" Width="400" Icon="/img/gamf.png" ResizeMode="CanMinimize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        FocusManager.FocusedElement="{Binding ElementName=tbUsername}"
+        >
+
+    <Window.Resources>
+        <local1:MyErrorConverter x:Key="MyConverter" />
+        <local1:vrUserName x:Key="UserName" />
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -28,12 +37,21 @@
 
             <Label x:Name="lbUsername" Grid.Column="0" Grid.Row="1" Margin="10,0,0,51" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Username" FontSize="16" Grid.RowSpan="2"/>
             <Label x:Name="lbPassword" Grid.Column="0" Grid.Row="3" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Password" FontSize="16"/>
+            <Label x:Name="lbLoginError" Grid.Column="0" Grid.Row="5" Margin="0,15,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="{Binding ElementName=tbUsername, Path=(Validation.Errors), Converter={StaticResource MyConverter}}" FontSize="15" Padding="0" Width="250" Height="26" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Foreground="Red" FontWeight="Bold" />
 
-            <Button x:Name="btLogin" Grid.Column="0" Grid.Row="5" Margin="15,0,0,15" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Login" FontSize="12" Padding="5" Width="80" BorderThickness="0" Background="Orange" RenderTransformOrigin="0.544,-0.04" Click="btLogin_Click"/>
+            <Button x:Name="btLogin" Grid.Column="0" Grid.Row="5" Margin="15,15,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Login" FontSize="12" Padding="5" Width="80" BorderThickness="0" Background="Orange" RenderTransformOrigin="0.544,-0.04" Click="btLogin_Click"/>
 
-            <TextBox x:Name="tbUsername" Grid.Column="0" Grid.Row="2" Margin="15,0,15,10" FontSize="20" TextAlignment="Left" />
+            <TextBox x:Name="tbUsername" Grid.Column="0" Grid.Row="2" Margin="15,0,15,10" FontSize="20" TextAlignment="Left" KeyUp="tbUsername_KeyUp">
+                <TextBox.Text>
+                    <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local1:vrUserName/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
-            <PasswordBox x:Name="pbPassword" Grid.Column="0" Grid.Row="4" Margin="15,0,15,10" FontSize="20"/>
+            <PasswordBox x:Name="pbPassword" Grid.Column="0" Grid.Row="4" Margin="15,0,15,10" FontSize="20" KeyUp="pbPassword_KeyUp" />
 
         </Grid>
 

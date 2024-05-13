@@ -45,25 +45,47 @@
             </Grid.RowDefinitions>
 
 
-            <Image x:Name="imUserPicture" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/img/defaultUserPicture.png" Width="150" Height="150" Margin="10"/>
+            <Image x:Name="imUserPicture" Source="/img/userPicture.png" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="150" Margin="10"/>
 
             <Label Grid.Column="1" Content="Username:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
-            <Label x:Name="lbUserName" Grid.Column="1" Content="B2TN3S"  HorizontalAlignment="Left" Margin="96,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+            <Label x:Name="lbUserName" Grid.Column="1" Content="{Binding}"  HorizontalAlignment="Left" Margin="96,20,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
 
 
             <Label Grid.Column="1" Content="First Name:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,50" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
-            <Label x:Name="lbFirstName" Grid.Column="1" Content="Mark"  HorizontalAlignment="Left" Margin="96,50,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+            <Label x:Name="lbFirstName" Grid.Column="1" Content="{Binding}"  HorizontalAlignment="Left" Margin="96,50,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
 
             <Label Grid.Column="1" Content="Last Name:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
-            <Label x:Name="lbLastName" Grid.Column="1" Content="Kovacs"  HorizontalAlignment="Left" Margin="96,80,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+            <Label x:Name="lbLastName" Grid.Column="1" Content="{Binding}"  HorizontalAlignment="Left" Margin="96,80,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
 
             <Label Grid.Column="1" Content="Status:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,110,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
-            <Label x:Name="lbState" Grid.Column="1" Content="Active"  HorizontalAlignment="Left" Margin="96,110,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
+            <Label x:Name="lbState" Grid.Column="1" Content="{Binding}"  HorizontalAlignment="Left" Margin="96,110,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15" Width="104"/>
 
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" x:Name="grUserCourses" Background="Wheat" Margin="10"/>
 
+        <Grid Grid.Row="1" Grid.Column="0" x:Name="grProfileUserInfoEdit" Margin="10" Background="Wheat">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="btUserPictureEdit" Background="Wheat" Click="btUserPictureEdit_Click" BorderBrush="Wheat">
+                <Image x:Name="imUserPictureEdit" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/img/addUserPicture.png" Width="150" Height="150" Margin="10"/>
+
+            </Button>
+
+            <Label Grid.Column="1" Content="Upload profile Picture:" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="32" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15"/>
+            <Button x:Name="btSaveUserPicture" Content="SAVE" Grid.Column="1" Width="50" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50" Click="btSaveUserPicture_Click"/>
+            <Button x:Name="btCancelUserPicture" Content="CANCEL" Grid.Column="1" Width="50" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,50,10,10" Click="btCancelUserPicture_Click"/>
+            <Button x:Name="btResetUserPicture" Content="RESET" Grid.Column="1" Width="50" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,50,70,10" Click="btResetUserPicture_Click"/>
+
+        </Grid>
 
     </Grid>
 </Page>

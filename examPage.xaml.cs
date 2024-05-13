@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using ExamSystem.Logic;
+using Model;
 
 namespace ExamSystem
 {
@@ -25,121 +32,105 @@ namespace ExamSystem
     {
         private int questionCounter = 0;
         public int correctCounter = 0;
+        private int courseId = 0;
+
+        Model.Model _context;
+        private LoggedInUser currentUser { get; }
 
 
+        private string examName;
+        List<QUESTION> relevantQuestions;
 
-        /* /////////////////////////////// Test data setup ////////////////////////////////////////// */
-
-        #region Test_data_setup
-
-        private string[] questions = {  "Which electronic component disconnects a pin from the bus?",
-                                        "Which logic gate does not exist?",
-                                        "What is not included in the Arduino UNO R3 Developer Panel?",
-                                        "Which is not a communication protocol?",
-                                        "What PWM stands for in electronics?"
-        };
-
-        private int[] correctAnwers = { 3, 3, 0, 2, 1 };
-
-        private string[] answers0 = { "H-Bridge", "Tri-state Buffer", "Operational Amplifier", "Schmitt Trigger" };
-        private string[] answers1 = { "NOR", "XNOR", "AND", "XAND" };
-        private string[] answers2 = { "Power Button", "Restart Button", "Built-in LED", "Power Supply Connector" };
-        private string[] answers3 = { "I2C", "SPI", "NOP", "CAN" };
-        private string[] answers4 = { "Parallel Wave Measurement",
-                                      "Pulse Width Modulation",
-                                      "Parallel Width Modulation",
-                                      "Pulse Wave Modulation" };
-
-
-
-        private List<string[]> Answers = new List<string[]>();
-
-
-        private struct Question {
-            public int correctAnswerIndex;
-            public string questionToAnswer;
-            public string[] answers;
-
-        };
-
-        private List<Question> Questions = new List<Question>();
-
-        private TextBlock[] answerButtonTextBlocks;
-
-        private void fillQuestions() {
-
-            Answers.Add(answers0);
-            Answers.Add(answers1); 
-            Answers.Add(answers2); 
-            Answers.Add(answers3);
-            Answers.Add(answers4);
-
-            for (int i=0;i<5;i++) { 
-                Question question = new Question();
-                question.correctAnswerIndex = correctAnwers[i];
-                question.questionToAnswer = questions[i];
-                question.answers = Answers[i];
-
-                Questions.Add(question);
-            }
-            
-        }
-
-        private void displayQuestion() {
-            for (int i=0;i<4;i++) {
-                answerButtonTextBlocks[i].Text = Questions[questionCounter].answers[i];
-            }
-
-            tbQestion.Text = Questions[questionCounter].questionToAnswer;
-
-        }
-        #endregion
-
-        public examPage()
+        public examPage(string examName, LoggedInUser user)
         {
             InitializeComponent();
 
-            answerButtonTextBlocks = new TextBlock[] { tbAnswer0, tbAnswer1, tbAnswer2, tbAnswer3 };
+            _context = new Model.Model();
+            currentUser = user;
 
-            fillQuestions();
-            //mixQuestionOrder();
-            //mixAnswerOrder();
+            this.examName=examName;
+
+            loadExam();
+
+
+        }
+
+        void loadExam()
+        {
+
+            //getting the course id
+            List<EXAM> exams = _context.EXAMs.ToList();
+
+            foreach (EXAM exam in exams)
+            {
+                if (exam.title == examName)
+                {
+                    courseId = exam.course_id; break;
+                }
+            }
+
+
+            //getting a list of relevant questions
+            List<QUESTION> questions = _context.QUESTIONs.ToList();
+            this.relevantQuestions = new List<QUESTION>();
+
+            foreach (QUESTION question in questions)
+            {
+                if (question.course_id == courseId)
+                {
+                    relevantQuestions.Add(question);
+                }
+            }
+            questions.Clear();
+
+
+            //hozzaadjuk a listboxhoz a kerdeseket
+            for (int i = 1; i <= relevantQuestions.Count; i++)
+            {
+                lbQuestions.Items.Add($"Question {i}");
+            }
+
             mixQuestionAndAnswerOrder();
 
-
-            displayQuestion();
+            lbQuestions.SelectedIndex = 0;
 
         }
 
 
+
+        #region mixQeustions
+
         private void mixQuestionOrder() {
-            List<Question> mixedQuestions = new List<Question>(Questions);
+
+            List<QUESTION> mixedQuestions = new List<QUESTION>(relevantQuestions);
             Random rnd = new Random();
 
             int itemsToMix = mixedQuestions.Count;
 
-            Questions.Clear();
+            relevantQuestions.Clear();
 
-            for (int i = 0; i < itemsToMix; i++) {
+            for (int i = 0; i < itemsToMix; i++)
+            {
 
-               int index = rnd.Next(0, mixedQuestions.Count);
-               Questions.Add(mixedQuestions[index]);
-               mixedQuestions.RemoveAt(index);
+                int index = rnd.Next(0, mixedQuestions.Count);
+                relevantQuestions.Add(mixedQuestions[index]);
+                mixedQuestions.RemoveAt(index);
             }
-
         }
 
         private void mixAnswerOrder()
         {
             Random rnd = new Random();
 
-            for (int i = 0; i < Questions.Count; i++)
+            for (int i = 0; i < relevantQuestions.Count; i++)
             {
-                Question question = Questions[i];
-                string[] mixedAnswers = new string[question.answers.Length];
-                Array.Copy(question.answers, mixedAnswers, question.answers.Length);
+                QUESTION question = relevantQuestions[i];
+                string[] answers = question.answers.Split(';');
+                string[] mixedAnswers = new string[answers.Length];
 
-                
+                Array.Copy(answers, mixedAnswers, answers.Length);
+
+
                 for (int j = mixedAnswers.Length - 1; j > 0; j--)
                 {
                     int k = rnd.Next(0, j + 1);
@@ -151,19 +142,28 @@ namespace ExamSystem
 
                 for (int j = 0; j < mixedAnswers.Length; j++)
                 {
-                    if (mixedAnswers[j] == question.answers[question.correctAnswerIndex])
+                    int solutionIndex = question.solution;
+
+                    if (mixedAnswers[j] == answers[solutionIndex-1])
                     {
-                        question.correctAnswerIndex = j;
+                        question.solution = j;
                         break;
                     }
-                    
+
                 }
 
-                for (int j = 0; j < mixedAnswers.Length; j++) {
-                    Questions[i].answers[j]= mixedAnswers[j];
+                // megkavart valaszok visszatoltese
+                string answersString = "";
+                for (int j = 0; j < mixedAnswers.Length; j++)
+                {
+                    answersString += mixedAnswers[j];
+                    answersString += ";";
+                    //relevantQuestions[i].answers[j] = mixedAnswers[j];
                 }
+                answersString = answersString.Substring(0,answersString.Length-1);
 
-                Questions[i]=question;
+                relevantQuestions[i].answers = answersString;
+                relevantQuestions[i] = question;
             }
         }
 
@@ -174,81 +174,101 @@ namespace ExamSystem
             mixAnswerOrder();
         }
 
+        #endregion
+
+        #region moveToNextQuestion
         private void moveToNextQuestion(int buttonPressed)
         {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
+            questionCounter++;
 
-            // correct answer
-            if (buttonPressed == Questions[questionCounter].correctAnswerIndex)
 
+            if (questionCounter < relevantQuestions.Count)
+            {
+                if (buttonPressed == relevantQuestions[questionCounter-1].solution)
                 {
-                    bitmap.UriSource = new Uri("/img/examStateSuccess.png", uriKind: UriKind.Relative);
-                    bitmap.EndInit();
+                    correctCounter += relevantQuestions[questionCounter - 1].point_value;
 
-                    correctCounter++;
-
+                }
+                lbQuestions.SelectedIndex = questionCounter;
             }
 
-            //incorrect answer
+
+            //done with exam
             else
             {
-                bitmap.UriSource = new Uri("/img/examStateFailed.png", uriKind: UriKind.Relative);
-                bitmap.EndInit();
+                //get completion precentage
+                int maxScore = 0;
+                foreach (QUESTION question in relevantQuestions) maxScore+=question.point_value;
+
+                float completion = correctCounter*100 / maxScore;
+
+                //isert to db
+                // az entity-vel nem mukodik...
+
+                //manual check az 5-ös korzusra (villanytan)
+                //UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
+
+                try {
+                    UpdateResult(currentUser.userName.ToString(), courseId, (int)completion);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Unable to update results for student.");
+
+                }
+
+                
+
+                //Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
+                //this.NavigationService.Navigate(pageFunctionUri);
+                this.NavigationService.Navigate(new ExamsPage(currentUser));
             }
 
-            switch (questionCounter)
-            {
-                case 0:
-                    imQuestionState0.Source = bitmap;
-                    frQuestionSelected0.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected1.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
 
-                    break;
 
-                case 1:
-                    imQuestionState1.Source = bitmap;
-                    frQuestionSelected1.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected2.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 2:
-                    imQuestionState2.Source = bitmap;
-                    frQuestionSelected2.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected3.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 3:
-                    imQuestionState3.Source = bitmap;
-                    frQuestionSelected3.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected4.Background = new SolidColorBrush(Colors.DarkBlue);
-                    questionCounter++;
-
-                    break;
-
-                case 4:
-                    imQuestionState4.Source = bitmap;
-
-                    Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
-                    this.NavigationService.Navigate(pageFunctionUri);
-
-                    break;
-
-                default:
-                    imQuestionState0.Source = bitmap;
-                    frQuestionSelected4.Background = new SolidColorBrush(Colors.Wheat);
-                    frQuestionSelected0.Background = new SolidColorBrush(Colors.DarkBlue);
-
-                    break;
-            };
-
-            displayQuestion();
         }
+
+        public void UpdateResult(string neptunId, int courseId, int? result)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami frissíti a meglévő rekord eredményét
+            string sql = @"
+        UPDATE STUDENTs_EXAMs
+        SET result = @Result
+        WHERE neptun_id = @NeptunId AND course_id = @CourseId";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméterek hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@NeptunId", neptunId);
+                        command.Parameters.AddWithValue("@CourseId", courseId);
+                        command.Parameters.AddWithValue("@Result", (object)result ?? DBNull.Value); // Kezeljük a NULL értéket ha szükséges
+
+                        // SQL parancs végrehajtása
+                        int affectedRows = command.ExecuteNonQuery();
+                        Console.WriteLine("Affected rows: {0}", affectedRows);
+
+                        // Ellenőrizzük, hogy valóban frissült-e a rekord
+                        if (affectedRows == 0)
+                        {
+                            Console.WriteLine("No record was updated. Please check if the student and course ID are correct.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+        }
+
 
         private void btAnswer0_Click(object sender, RoutedEventArgs e)
         {
@@ -263,15 +283,32 @@ namespace ExamSystem
 
         private void btAnswer2_Click(object sender, RoutedEventArgs e)
         {
-            moveToNextQuestion(2);
+           moveToNextQuestion(2);
 
         }
 
-        //correct answer
         private void btAnswer3_Click(object sender, RoutedEventArgs e)
         {
             moveToNextQuestion(3);
         }
+
+        #endregion
+
+
+        private void lbQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //a kivalasztott kerdes fuggvenyeben jelenitjuk meg a kerdeseket
+     
+            tbQestion.Text = relevantQuestions[lbQuestions.SelectedIndex].question;
+
+            string[] answers = relevantQuestions[lbQuestions.SelectedIndex].answers.Split(';');
+
+            tbAnswer0.Text = answers[0];
+            tbAnswer1.Text = answers[1];
+            tbAnswer2.Text = answers[2];
+            tbAnswer3.Text = answers[3];
+        }
+
 
 
     }

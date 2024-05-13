@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExamSystem"
         mc:Ignorable="d"
-        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png" ResizeMode="CanMinimize">
+        Title="NJE Exam System" Height="400" Width="800" Icon="/img/gamf.png" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterOwner"
+        >
+    
     <Grid>
 
 
@@ -34,7 +37,7 @@
 
         </Menu>
 
-        <Frame x:Name="frDashboard" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Source="/ExamsPage.xaml" />
+        <Frame x:Name="frDashboard" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Initialized="frDashboard_Initialized" />
 
     </Grid>
 </Window>
