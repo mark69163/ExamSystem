@@ -34,6 +34,8 @@ namespace ExamSystem
         public int correctCounter = 0;
         private int courseId = 0;
 
+
+        //adatbazisunk modellje
         Model.Model _context;
         private LoggedInUser currentUser { get; }
 
@@ -41,6 +43,8 @@ namespace ExamSystem
         private string examName;
         List<QUESTION> relevantQuestions;
 
+
+        //konstruktor
         public examPage(string examName, LoggedInUser user)
         {
             InitializeComponent();
@@ -55,6 +59,7 @@ namespace ExamSystem
 
         }
 
+        //relevans vizsgak betoltese
         void loadExam()
         {
 
@@ -217,8 +222,6 @@ namespace ExamSystem
 
                 }
 
-                
-
                 //Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
                 //this.NavigationService.Navigate(pageFunctionUri);
                 this.NavigationService.Navigate(new ExamsPage(currentUser));
@@ -295,9 +298,11 @@ namespace ExamSystem
         #endregion
 
 
+
+        //a kivalasztott kerdes fuggvenyeben jelenitjuk meg a kerdeseket
+
         private void lbQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //a kivalasztott kerdes fuggvenyeben jelenitjuk meg a kerdeseket
      
             tbQestion.Text = relevantQuestions[lbQuestions.SelectedIndex].question;
 

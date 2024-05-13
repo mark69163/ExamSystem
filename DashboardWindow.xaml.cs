@@ -27,6 +27,7 @@ namespace ExamSystem
     {
         public LoggedInUser CurrentUser { get; }
 
+
         public DashboardWindow(LoggedInUser User)
         {
             CurrentUser = User;
