@@ -42,6 +42,8 @@ namespace Model
 
         public int? time_limit { get; set; }
 
+
+
         public virtual IList<STUDENT> STUDENTs { get; set; }
 
         public virtual IList<INSTRUCTOR> INSTRUCTORs { get; set; }

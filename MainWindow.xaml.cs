@@ -79,6 +79,12 @@ namespace ExamSystem
 
             string pattern = @"^[a-zA-Z0-9]+$";
 
+            // Teszt userek
+            if (userName.ToUpper() == "TESTSTUDENT" || userName.ToUpper() == "PROGRAMMERSTUDENT")
+            {
+                lbLoginError.Visibility = Visibility.Hidden;
+                return true; 
+            }
             //nem 6 karakter hosszu
             if (userName.Length != 6)
             {
@@ -106,7 +112,8 @@ namespace ExamSystem
         {
             List<STUDENT> students = _context.STUDENTs.ToList();
             int counter = 0;
-            
+            if (tbUsername.Text.ToUpper() == "TESTSTUDENT" || tbUsername.Text.ToUpper() == "PROGRAMMERSTUDENT")
+                return true;
             foreach (STUDENT student in students)
             {
                 string userName = tbUsername.Text.ToUpper();
@@ -137,16 +144,19 @@ namespace ExamSystem
         //login bypass
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            User = new LoggedInUser();
-            User.userName = "teststudent";
+            if (userAuthentication())
+            {
+                User = new LoggedInUser();
+                User.userName = tbUsername.Text.ToUpper();
 
-            DashboardWindow dashboardWindow = new DashboardWindow(User);
-            dashboardWindow.Show();
+                DashboardWindow dashboardWindow = new DashboardWindow(User);
+                dashboardWindow.Show();
+                //close login window
+                Close();
+            }
 
-            //close login window
-            Close();
+
         }
-
 
 
         private void pbPassword_KeyUp(object sender, KeyEventArgs e)

@@ -51,12 +51,49 @@ namespace ExamSystem
 
             //exam-ek betöltése és engedélyezése
             int[] validExams = getExams(currentUser.userName);
-            
+            int excount = 0;
             foreach (int id in validExams)
             {
+                if (excount < validExams.Length)
+                {
+                    Button btExamStart = (Button)this.FindName($"btExamStart{excount}");
+                    TextBox tbExam = (TextBox)this.FindName($"tbExam{excount}");
+                    ProgressBar pbExam = (ProgressBar)this.FindName($"pbExam{excount}");
+                    Label lbExamName = (Label)this.FindName($"lbExamName{excount}");
+                    Label lbExamPoints = (Label)this.FindName($"lbExamPoints{excount}");
+                    Image imExam = (Image)this.FindName($"imExam{excount}");
+
+                    if (GetExamResult(currentUser.userName, id) == null)
+                    {
+                        btExamStart.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btExamStart.IsEnabled = false;
+                        btExamStart.Content = "Finished";
+                    }
+
+                    tbExam.Text = String.Format("Level: " + GetExamDetails(id).Level + "\nCredits: " + GetExamDetails(id).KreditValue + "\nTime limit: " + GetExamDetails(id).TimeLimit + " s");
+                    if (GetExamResult(currentUser.userName, id) != null)
+                    {
+                        pbExam.Value = int.Parse(GetExamResult(currentUser.userName, id).ToString());
+                    }
+                    else
+                    {
+                        pbExam.Value = 0;
+                    }
+                    lbExamName.Content = GetExamDetails(id).Title;
+                    lbExamPoints.Content = GetExamResult(currentUser.userName, id);
+                    imExam.Source = new BitmapImage(new Uri(GetExamDetails(id).imgSource, UriKind.Relative));
+
+                    excount++;
+                }
+                
                 //meg nem vizsgazott
                 if (GetExamResult(currentUser.userName, id) == null) {
-
+                    // prog
+                    
+                    /* Regi, statikus metodus:
                     //villanytan van
                     if (id == 5)
                     {
@@ -74,15 +111,38 @@ namespace ExamSystem
                     {
                         btExamStart2.IsEnabled = true;
                     }
-
+                    */
                 }
 
+            }
+            for (int i = excount; i < 6; i++)
+            {
+                 Button btExamStart = (Button)this.FindName($"btExamStart{i}");
+                 TextBox tbExam = (TextBox)this.FindName($"tbExam{i}");
+                 ProgressBar pbExam = (ProgressBar)this.FindName($"pbExam{i}");
+                 Label lbExamName = (Label)this.FindName($"lbExamName{i}");
+                 Label lbExamPoints = (Label)this.FindName($"lbExamPoints{i}");
+                 Image imExam = (Image)this.FindName($"imExam{i}");
+                 Label lbResults = (Label)this.FindName($"lbResults{i}");
+                 Frame frExam = (Frame)this.FindName($"frExam{i}");
+
+                btExamStart.Visibility = Visibility.Hidden;
+                 tbExam.Visibility = Visibility.Hidden;
+                 pbExam.Visibility = Visibility.Hidden;
+                 lbExamName.Visibility = Visibility.Hidden;
+                 lbExamPoints.Visibility = Visibility.Hidden;
+                 imExam.Visibility = Visibility.Hidden;
+                lbResults.Visibility = Visibility.Hidden;
+                frExam.Background = Brushes.White;
             }
 
             try
             {
+                
                 //loading the villamossagtan exam
                 //amennyiben nem null, azaz mar egyszer megcsinalta a user
+
+                /*
                 if (GetExamResult(currentUser.userName, 5) != null)
                 {
                     pbExam1.Value = int.Parse(GetExamResult(currentUser.userName, 5).ToString());
@@ -93,29 +153,9 @@ namespace ExamSystem
                     pbExam1.Value = 0;
                     lbExamPoints1.Content = 0;
                 }
-
+                */
                 //loading the adatbazisok exam
-                if (GetExamResult(currentUser.userName, 3) != null)
-                {
-                    pbExam0.Value = int.Parse(GetExamResult(currentUser.userName, 3).ToString());
-                    lbExamPoints0.Content = GetExamResult(currentUser.userName, 3);
-                }
-                else
-                {
-                    pbExam0.Value = 0;
-                    lbExamPoints0.Content = 0;
-                }
-                //loading the programming exam
-                if (GetExamResult(currentUser.userName, 1) != null)
-                {
-                    pbExam2.Value = int.Parse(GetExamResult(currentUser.userName, 1).ToString());
-                    lbExamPoints2.Content = GetExamResult(currentUser.userName, 1);
-                }
-                else
-                {
-                    pbExam2.Value = 0;
-                    lbExamPoints2.Content = 0;
-                }
+               
 
 
             }
@@ -170,6 +210,67 @@ namespace ExamSystem
 
             // Listát tömbbé alakítás és visszaadás
             return courseIdList.ToArray();
+        }
+
+        public struct ExamDetails
+        {
+            public int CourseId { get; set; }
+            public string Title { get; set; }
+            public string Level { get; set; }
+            public int KreditValue { get; set; }
+            public DateTime StartTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public int TimeLimit { get; set; }
+            public string imgSource { get; set; }
+        }
+
+        public ExamDetails GetExamDetails(int courseId)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami lekérdezi a vizsga kurzusait a megadott course_id alapján
+            string sql = @"
+SELECT *
+FROM EXAMs
+WHERE course_id = @courseId";
+
+            ExamDetails examDetails = new ExamDetails();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméter hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@courseId", courseId);
+
+                        // SQL parancs végrehajtása és az eredmény olvasása
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                examDetails.CourseId = Convert.ToInt32(reader["course_id"]);
+                                examDetails.Title = reader["title"].ToString();
+                                examDetails.Level = reader["level"].ToString();
+                                examDetails.KreditValue = Convert.ToInt32(reader["kredit_value"]);
+                                examDetails.StartTime = reader.IsDBNull(reader.GetOrdinal("start_time")) ? DateTime.MinValue : Convert.ToDateTime(reader["start_time"]);
+                                examDetails.EndTime = reader.IsDBNull(reader.GetOrdinal("end_time")) ? DateTime.MinValue : Convert.ToDateTime(reader["end_time"]);
+                                examDetails.TimeLimit = reader.IsDBNull(reader.GetOrdinal("time_limit")) ? 0 : Convert.ToInt32(reader["time_limit"]);
+                                examDetails.imgSource = reader["imgSource"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+
+            return examDetails;
         }
 
 
