@@ -1,0 +1,15 @@
+Hallgatók - User + jelszó
+
+B2TN3S - kovacsmark
+F2XVKV - hokiattila
+GYBASN - koltaiarmand
+programmerstudent - programmer
+teststudent - test
+
+
+Tanárok UserID + jelszó
+
+1 - gipszjakab
+2 - kovacsbela
+3 - szaboeva
+
