@@ -34,6 +34,13 @@ namespace ExamSystem
             _context = new Model.Model();
             currentUser = user;
 
+            loadExams();
+     
+
+        }
+
+        private void loadExams()
+        {
             // Adatok betöltése
             lbExamName0.Content = _context.EXAMs.ToList()[2].title;
             lbExamName1.Content = _context.EXAMs.ToList()[4].title;
@@ -55,8 +62,38 @@ namespace ExamSystem
             }
             */
 
-           
-            try {
+            //exam-ek betöltése és engedélyezése
+            int[] validExams = getExams(currentUser.userName);
+            
+            foreach (int id in validExams)
+            {
+                //meg nem vizsgazott
+                if (GetExamResult(currentUser.userName, id) == null) {
+
+                    //villanytan van
+                    if (id == 5)
+                    {
+                        btExamStart1.IsEnabled = true;
+                    }
+
+                    //adatb van
+                    if (id == 3)
+                    {
+                        btExamStart0.IsEnabled = true;
+                    }
+
+                    //prog van
+                    if (id == 1)
+                    {
+                        btExamStart2.IsEnabled = true;
+                    }
+
+                }
+
+            }
+
+            try
+            {
                 //loading the villamossagtan exam
                 if (GetExamResult(currentUser.userName, 5) != null)
                 {
@@ -94,20 +131,59 @@ namespace ExamSystem
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show("Unable to fetch data from database!");
             }
 
-
-            //loading the adatbazisok exam
-     
-
         }
-            
+
+        public int[] getExams(string neptunId)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami lekérdezi a vizsga kurzusait a megadott hallgató alapján
+            string sql = @"
+        SELECT course_id
+        FROM STUDENTs_EXAMs
+        WHERE neptun_id = @NeptunId";
+
+            List<int> courseIdList = new List<int>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméter hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@NeptunId", neptunId);
+
+                        // SQL parancs végrehajtása és az eredmény olvasása
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int courseId = Convert.ToInt32(reader["course_id"]); // Helyes oszlop nevet kell használni
+                                courseIdList.Add(courseId);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+
+            // Listát tömbbé alakítás és visszaadás
+            return courseIdList.ToArray();
+        }
 
 
 
-        
 
         public int? GetExamResult(string neptunId, int courseId)
         {
@@ -149,6 +225,7 @@ namespace ExamSystem
             return null;
         }
 
+      
 
 
         private void btExamStart0_Click(object sender, RoutedEventArgs e)

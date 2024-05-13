@@ -217,6 +217,8 @@ namespace ExamSystem
 
                 }
 
+                
+
                 //Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
                 //this.NavigationService.Navigate(pageFunctionUri);
                 this.NavigationService.Navigate(new ExamsPage(currentUser));
