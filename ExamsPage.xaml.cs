@@ -41,7 +41,8 @@ namespace ExamSystem
 
             //jó lenne, de nem működik, mivel az enitity developer nem generalta le
             //lbExamPoints1.Content = _context.STUDENTs_EXAMs.ToList()[1].result;
-           
+
+            /*
             if (GetExamResult("B2TN3S",5)!=null ) {
                 pbExam1.Value = int.Parse(GetExamResult("B2TN3S", 5).ToString()); 
                 lbExamPoints1.Content = GetExamResult("B2TN3S", 5);
@@ -50,6 +51,24 @@ namespace ExamSystem
                 pbExam1.Value =0 ;
                 lbExamPoints1.Content = 0;
             }
+            */
+
+            try {
+                if (GetExamResult(currentUser.userName, 5) != null)
+                {
+                    pbExam1.Value = int.Parse(GetExamResult(currentUser.userName, 5).ToString());
+                    lbExamPoints1.Content = GetExamResult(currentUser.userName, 5);
+                }
+                else
+                {
+                    pbExam1.Value = 0;
+                    lbExamPoints1.Content = 0;
+                }
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Unable to fetch data from database!");
+            }
+
         }
             
 

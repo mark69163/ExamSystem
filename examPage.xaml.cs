@@ -35,7 +35,7 @@ namespace ExamSystem
         private int courseId = 0;
 
         Model.Model _context;
-        public LoggedInUser currentUser { get; }
+        private LoggedInUser currentUser { get; }
 
 
         private string examName;
@@ -200,18 +200,25 @@ namespace ExamSystem
                 int maxScore = 0;
                 foreach (QUESTION question in relevantQuestions) maxScore+=question.point_value;
 
-                float completion = correctCounter / maxScore;
+                float completion = correctCounter*100 / maxScore;
 
                 //isert to db
                 // az entity-vel nem mukodik...
 
                 //manual check az 5-ös korzusra (villanytan)
-                UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
+                //UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
 
+                try {
+                    UpdateResult(currentUser.userName.ToString(), courseId, (int)completion);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Unable to update results for student.");
+
+                }
 
                 //Uri pageFunctionUri = new Uri("ExamsPage.xaml", UriKind.Relative);
                 //this.NavigationService.Navigate(pageFunctionUri);
-                //frExam.Navigate(new ExamsPage(currentUser));
                 this.NavigationService.Navigate(new ExamsPage(currentUser));
             }
 

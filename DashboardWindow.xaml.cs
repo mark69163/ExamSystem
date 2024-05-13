@@ -29,8 +29,9 @@ namespace ExamSystem
 
         public DashboardWindow(LoggedInUser User)
         {
-            InitializeComponent();
             CurrentUser = User;
+
+            InitializeComponent();
 
         }
 
@@ -71,5 +72,7 @@ namespace ExamSystem
             frDashboard.Navigate(new ExamsPage(CurrentUser));
 
         }
+
+
     }
 }
