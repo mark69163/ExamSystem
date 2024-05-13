@@ -49,19 +49,6 @@ namespace ExamSystem
             //jó lenne, de nem működik, mivel az enitity developer nem generalta le
             //lbExamPoints1.Content = _context.STUDENTs_EXAMs.ToList()[1].result;
 
-
-            //statikus teszteles
-            /*
-            if (GetExamResult("B2TN3S",5)!=null ) {
-                pbExam1.Value = int.Parse(GetExamResult("B2TN3S", 5).ToString()); 
-                lbExamPoints1.Content = GetExamResult("B2TN3S", 5);
-            }
-            else{
-                pbExam1.Value =0 ;
-                lbExamPoints1.Content = 0;
-            }
-            */
-
             //exam-ek betöltése és engedélyezése
             int[] validExams = getExams(currentUser.userName);
             
@@ -95,6 +82,7 @@ namespace ExamSystem
             try
             {
                 //loading the villamossagtan exam
+                //amennyiben nem null, azaz mar egyszer megcsinalta a user
                 if (GetExamResult(currentUser.userName, 5) != null)
                 {
                     pbExam1.Value = int.Parse(GetExamResult(currentUser.userName, 5).ToString());
@@ -138,6 +126,8 @@ namespace ExamSystem
 
         }
 
+
+        //lekerdezzuk, hogy milyen vizsgak tartoznak adott neptunkodhoz
         public int[] getExams(string neptunId)
         {
             // Itt definiáljuk a kapcsolati sztringet
@@ -184,6 +174,7 @@ namespace ExamSystem
 
 
 
+        //lekerdezzuk, hogy milyen eredmeny tartozik adott neptunkodhoz adott viszga eseten
 
         public int? GetExamResult(string neptunId, int courseId)
         {
@@ -230,14 +221,14 @@ namespace ExamSystem
 
         private void btExamStart0_Click(object sender, RoutedEventArgs e)
         {
+            //atrianyitas a relevans exam-hez, pl ez az adatb
             this.NavigationService.Navigate(new examPage(lbExamName0.Content.ToString(), currentUser));
 
         }
 
         private void btExamStart1_Click(object sender, RoutedEventArgs e)
         {
-            //Uri pageFunctionUri = new Uri("examPage.xaml", UriKind.Relative);
-            //this.NavigationService.Navigate(pageFunctionUri,correctCounter);
+          
             this.NavigationService.Navigate(new examPage(lbExamName1.Content.ToString(), currentUser));
         }
 
@@ -249,9 +240,7 @@ namespace ExamSystem
 
         private void pbExam1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //pbExam1.Value = correctCounter*20;
-            //lbExamPoints1.Content = correctCounter*20;
-
+          
         }
     }
 }
