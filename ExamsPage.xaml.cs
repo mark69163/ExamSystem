@@ -42,6 +42,8 @@ namespace ExamSystem
             //jó lenne, de nem működik, mivel az enitity developer nem generalta le
             //lbExamPoints1.Content = _context.STUDENTs_EXAMs.ToList()[1].result;
 
+
+            //statikus teszteles
             /*
             if (GetExamResult("B2TN3S",5)!=null ) {
                 pbExam1.Value = int.Parse(GetExamResult("B2TN3S", 5).ToString()); 
@@ -53,7 +55,9 @@ namespace ExamSystem
             }
             */
 
+           
             try {
+                //loading the villamossagtan exam
                 if (GetExamResult(currentUser.userName, 5) != null)
                 {
                     pbExam1.Value = int.Parse(GetExamResult(currentUser.userName, 5).ToString());
@@ -64,10 +68,39 @@ namespace ExamSystem
                     pbExam1.Value = 0;
                     lbExamPoints1.Content = 0;
                 }
+
+                //loading the adatbazisok exam
+                if (GetExamResult(currentUser.userName, 3) != null)
+                {
+                    pbExam0.Value = int.Parse(GetExamResult(currentUser.userName, 3).ToString());
+                    lbExamPoints0.Content = GetExamResult(currentUser.userName, 3);
+                }
+                else
+                {
+                    pbExam0.Value = 0;
+                    lbExamPoints0.Content = 0;
+                }
+                //loading the programming exam
+                if (GetExamResult(currentUser.userName, 1) != null)
+                {
+                    pbExam2.Value = int.Parse(GetExamResult(currentUser.userName, 1).ToString());
+                    lbExamPoints2.Content = GetExamResult(currentUser.userName, 1);
+                }
+                else
+                {
+                    pbExam2.Value = 0;
+                    lbExamPoints2.Content = 0;
+                }
+
+
             }
             catch (Exception ex) {
                 MessageBox.Show("Unable to fetch data from database!");
             }
+
+
+            //loading the adatbazisok exam
+     
 
         }
             
