@@ -106,13 +106,13 @@ namespace ExamSystem
         {
             List<STUDENT> students = _context.STUDENTs.ToList();
             int counter = 0;
-
+            
             foreach (STUDENT student in students)
             {
                 string userName = tbUsername.Text.ToUpper();
                 string userPassword = pbPassword.Password;
                 userPassword = HashPassword(userPassword);
-                Console.WriteLine();
+
                 //all good
                 if (userName == student.neptun_id && userPassword == student.hash_password)
                 {
