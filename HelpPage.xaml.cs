@@ -183,7 +183,77 @@ namespace ExamSystem
 
         private void AssignButton_Click(object sender, RoutedEventArgs e)
         {
-            // Itt lehet kezelni az "Assign" gomb lenyomását
+            string selectedStudent = studentComboBox.SelectedItem as string;
+            string selectedExam = examComboBox.SelectedItem as string;
+
+            if (selectedStudent == null || selectedExam == null)
+            {
+                MessageBox.Show("Kérem válasszon ki egy tanulót és egy vizsgát az hozzárendeléshez.");
+                return;
+            }
+
+            try
+            {
+                // Első lépés: lekérjük a tanuló neptun azonosítóját
+                string studentNeptunId = selectedStudent;
+                
+
+                // Második lépés: lekérjük a vizsga course_id-jét
+                int examCourseId = 0;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = @"SELECT course_id FROM EXAMs WHERE title = @Title";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Title", selectedExam);
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            examCourseId = Convert.ToInt32(result);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nem található a megadott címmel rendelkező vizsga.");
+                            return;
+                        }
+                    }
+                }
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string checkSql = "SELECT COUNT(*) FROM STUDENTs_EXAMs WHERE neptun_id = @NeptunId AND course_id = @CourseId";
+
+                    using (SqlCommand checkCommand = new SqlCommand(checkSql, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@NeptunId", studentNeptunId);
+                        checkCommand.Parameters.AddWithValue("@CourseId", examCourseId);
+
+                        int count = (int)checkCommand.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            MessageBox.Show("A tanuló már hozzá lett adva a vizsgához!");
+                            return;
+                        }
+                    }
+
+                    string insertSql = "INSERT INTO STUDENTs_EXAMs (neptun_id, course_id) VALUES (@NeptunId, @CourseId)";
+                    using (SqlCommand command = new SqlCommand(insertSql, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeptunId", studentNeptunId);
+                        command.Parameters.AddWithValue("@CourseId", examCourseId);
+
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Vizsga sikeresen hozzáadva a tanulóhoz.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt a hozzárendelés közben: " + ex.Message);
+            }
         }
 
     }
