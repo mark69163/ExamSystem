@@ -41,7 +41,7 @@ namespace ExamSystem
             if (isInstructor(CurrentUser.userName))
             {
                 miExams.Visibility = Visibility.Hidden;
-                frDashboard.Source = new Uri("HelpPage.xaml", UriKind.Relative);
+                frDashboard.Navigate(new HelpPage(CurrentUser));
 
             }
             else miHelp.Visibility = Visibility.Hidden;
@@ -60,8 +60,8 @@ namespace ExamSystem
 
         private void miHelp_Click(object sender, RoutedEventArgs e)
         {
-            frDashboard.Source = new Uri("HelpPage.xaml",UriKind.Relative);
-           
+            frDashboard.Navigate(new HelpPage(CurrentUser));
+
         }
 
         private void miProfile_Click(object sender, RoutedEventArgs e)

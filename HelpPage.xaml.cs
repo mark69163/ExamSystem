@@ -12,6 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using ExamSystem.Logic;
+using Model;
+using static System.Windows.Forms.AxHost;
+
+
 
 namespace ExamSystem
 {
@@ -20,9 +26,166 @@ namespace ExamSystem
     /// </summary>
     public partial class HelpPage : Page
     {
-        public HelpPage()
+        public LoggedInUser currentUser { get; }
+        Model.Model _context;
+        public HelpPage(LoggedInUser user)
         {
             InitializeComponent();
+            currentUser = user;
+            LoadStudents();
+            LoadExams(currentUser.userName);
         }
+        private string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True;";
+
+        private void AddExam_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = @"INSERT INTO EXAMs (title, level, kredit_value, start_time, end_time, time_limit) 
+                                   VALUES (@Title, @Level, @KreditValue, @StartTime, @EndTime, @TimeLimit)";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Title", txtTitle.Text);
+                        command.Parameters.AddWithValue("@Level", txtLevel.Text);
+                        command.Parameters.AddWithValue("@KreditValue", int.Parse(txtKreditValue.Text));
+                        command.Parameters.AddWithValue("@StartTime", dpStartTime.SelectedDate);
+                        command.Parameters.AddWithValue("@EndTime", dpEndTime.SelectedDate);
+                        command.Parameters.AddWithValue("@TimeLimit", int.Parse(txtTimeLimit.Text));
+
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Vizsga sikeresen hozzáadva az adatbázishoz.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt a vizsga hozzáadása közben: " + ex.Message);
+            }
+        }
+        private bool CheckInput()
+        {
+            bool isValid = true;
+            string errorMessage = "";
+
+            // Ellenőrizzük a kredit értéket
+            if (!int.TryParse(txtKreditValue.Text, out _))
+            {
+                errorMessage += "Kredit érték csak szám lehet.\n";
+                isValid = false;
+            }
+
+
+            // Ellenőrizzük a időkorlátot
+            if (!int.TryParse(txtTimeLimit.Text, out _))
+            {
+                errorMessage += "Időkorlát csak szám lehet.\n";
+                isValid = false;
+            }
+
+            // Kiírjuk az error message-et a labelbe
+            lblError.Content = errorMessage;
+
+            return isValid;
+        }
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Foreground == Brushes.Gray)
+            {
+                textBox.Text = "";
+                textBox.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (textBox == txtTitle)
+                    textBox.Text = "Enter Title (eg.: Calculus)";
+                if (textBox == txtLevel)
+                    textBox.Text = "Enter Level (eg.: BsC)";
+                if (textBox == txtKreditValue)
+                    textBox.Text = "Enter credit Value (eg.: 4)";
+                if (textBox == txtTimeLimit)
+                    textBox.Text = "Enter Time Limit in seconds(eg.: 150)";
+                textBox.Foreground = Brushes.Gray;
+            }
+        }
+        private void LoadStudents()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "SELECT neptun_id FROM STUDENTs";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            List<string> students = new List<string>();
+                            while (reader.Read())
+                            {
+                                students.Add(reader.GetString(0));
+                            }
+                            studentComboBox.ItemsSource = students;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt a diákok betöltése közben: " + ex.Message);
+            }
+        }
+
+        private void LoadExams(string instructor)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = @"SELECT EXAMs.title 
+               FROM EXAMs 
+               INNER JOIN EXAMs_INSTRUCTORS ON EXAMs.course_id = EXAMs_INSTRUCTORS.course_id
+               WHERE EXAMs_INSTRUCTORS.profid = (SELECT profid FROM INSTRUCTORS WHERE username LIKE @Username)";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", instructor);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            List<string> exams = new List<string>();
+                            while (reader.Read())
+                            {
+                                exams.Add(reader.GetString(0));
+                            }
+                            examComboBox.ItemsSource = exams;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt a vizsgák betöltése közben: " + ex.Message);
+            }
+        }
+
+
+        private void AssignButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Itt lehet kezelni az "Assign" gomb lenyomását
+        }
+
     }
+
 }

@@ -54,7 +54,7 @@ namespace ExamSystem
             int excount = 0;
             foreach (int id in validExams)
             {
-                if (excount < validExams.Length)
+                if (excount < validExams.Length && excount < 6)
                 {
                     Button btExamStart = (Button)this.FindName($"btExamStart{excount}");
                     TextBox tbExam = (TextBox)this.FindName($"tbExam{excount}");
@@ -136,23 +136,25 @@ namespace ExamSystem
             }
             for (int i = excount; i < 6; i++)
             {
-                 Button btExamStart = (Button)this.FindName($"btExamStart{i}");
-                 TextBox tbExam = (TextBox)this.FindName($"tbExam{i}");
-                 ProgressBar pbExam = (ProgressBar)this.FindName($"pbExam{i}");
-                 Label lbExamName = (Label)this.FindName($"lbExamName{i}");
-                 Label lbExamPoints = (Label)this.FindName($"lbExamPoints{i}");
-                 Image imExam = (Image)this.FindName($"imExam{i}");
-                 Label lbResults = (Label)this.FindName($"lbResults{i}");
-                 Frame frExam = (Frame)this.FindName($"frExam{i}");
 
-                btExamStart.Visibility = Visibility.Hidden;
-                 tbExam.Visibility = Visibility.Hidden;
-                 pbExam.Visibility = Visibility.Hidden;
-                 lbExamName.Visibility = Visibility.Hidden;
-                 lbExamPoints.Visibility = Visibility.Hidden;
-                 imExam.Visibility = Visibility.Hidden;
-                lbResults.Visibility = Visibility.Hidden;
-                frExam.Background = Brushes.White;
+                    Button btExamStart = (Button)this.FindName($"btExamStart{i}");
+                    TextBox tbExam = (TextBox)this.FindName($"tbExam{i}");
+                    ProgressBar pbExam = (ProgressBar)this.FindName($"pbExam{i}");
+                    Label lbExamName = (Label)this.FindName($"lbExamName{i}");
+                    Label lbExamPoints = (Label)this.FindName($"lbExamPoints{i}");
+                    Image imExam = (Image)this.FindName($"imExam{i}");
+                    Label lbResults = (Label)this.FindName($"lbResults{i}");
+                    Frame frExam = (Frame)this.FindName($"frExam{i}");
+
+                    btExamStart.Visibility = Visibility.Hidden;
+                    tbExam.Visibility = Visibility.Hidden;
+                    pbExam.Visibility = Visibility.Hidden;
+                    lbExamName.Visibility = Visibility.Hidden;
+                    lbExamPoints.Visibility = Visibility.Hidden;
+                    imExam.Visibility = Visibility.Hidden;
+                    lbResults.Visibility = Visibility.Hidden;
+                    frExam.Background = Brushes.White;
+                
             }
 
             try
