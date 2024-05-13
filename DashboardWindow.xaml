@@ -29,9 +29,9 @@
             </Menu.ItemsPanel>
 
             <MenuItem Header="Exams" x:Name="miExams" VerticalAlignment="Top" Margin="0,6,0,0" Click="miQuestion_Click"/>
-            <MenuItem Header="Help" x:Name="miHelp" VerticalAlignment="Bottom" Margin="0,0,0,6" Click="miHelp_Click"/>
             <MenuItem Header="Profile" x:Name="miProfile" VerticalAlignment="Center" Click="miProfile_Click" />
             <MenuItem Header="Sign out" x:Name="miSignOut" VerticalAlignment="Center" Click="miSignOut_Click" />
+            <MenuItem Header="Upload or Edit Exam" x:Name="miHelp" VerticalAlignment="Bottom" Margin="0,0,0,6" Click="miHelp_Click"/>
 
 
 

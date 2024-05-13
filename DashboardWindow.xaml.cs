@@ -15,6 +15,8 @@ using System.Globalization;
 using Model;
 using ExamSystem.Logic;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Data.SqlClient;
+using static ExamSystem.ExamsPage;
 
 
 
@@ -32,7 +34,17 @@ namespace ExamSystem
         {
             CurrentUser = User;
 
+            
+
             InitializeComponent();
+
+            if (isInstructor(CurrentUser.userName))
+            {
+                miExams.Visibility = Visibility.Hidden;
+                frDashboard.Source = new Uri("HelpPage.xaml", UriKind.Relative);
+
+            }
+            else miHelp.Visibility = Visibility.Hidden;
 
         }
 
@@ -72,6 +84,47 @@ namespace ExamSystem
         {
             frDashboard.Navigate(new ExamsPage(CurrentUser));
 
+        }
+
+        public bool isInstructor(string nev)
+        {
+            // Itt definiáljuk a kapcsolati sztringet
+            string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True; TrustServerCertificate=True";
+
+            // SQL parancs, ami lekérdezi a vizsga kurzusait a megadott course_id alapján
+            string sql = @"
+SELECT username
+FROM INSTRUCTORs
+WHERE username LIKE @nev";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Paraméter hozzáadása a SQL parancshoz
+                        command.Parameters.AddWithValue("@nev", nev);
+
+                        // SQL parancs végrehajtása és az eredmény olvasása
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return true;
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+
+            return false;
         }
 
 

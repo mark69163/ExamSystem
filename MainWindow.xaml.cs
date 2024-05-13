@@ -111,23 +111,39 @@ namespace ExamSystem
         private bool userAuthentication()
         {
             List<STUDENT> students = _context.STUDENTs.ToList();
+            List<INSTRUCTOR> instructors = _context.INSTRUCTORs.ToList();
+            string userName = tbUsername.Text.ToUpper();
+            string userPassword = pbPassword.Password;
+            userPassword = HashPassword(userPassword);
             int counter = 0;
             if (tbUsername.Text.ToUpper() == "TESTSTUDENT" || tbUsername.Text.ToUpper() == "PROGRAMMERSTUDENT")
                 return true;
             foreach (STUDENT student in students)
             {
-                string userName = tbUsername.Text.ToUpper();
-                string userPassword = pbPassword.Password;
-                userPassword = HashPassword(userPassword);
 
                 //all good
-                if (userName == student.neptun_id && userPassword == student.hash_password)
+                if (userName.ToUpper() == student.neptun_id.ToUpper() && userPassword == student.hash_password)
                 {
                     //User.userPassword = userPassword;
                     //User.userName = userName;
                     return true;
                 }
-                else if (userName == student.neptun_id) counter++;
+                else if (userName.ToUpper() == student.neptun_id.ToUpper()) counter++;
+
+
+            }
+            foreach (INSTRUCTOR instructor in instructors)
+            {
+
+
+                //all good
+                if (userName.ToUpper() == instructor.username.ToUpper() && userPassword == instructor.hash_password)
+                {
+                    //User.userPassword = userPassword;
+                    //User.userName = userName;
+                    return true;
+                }
+                else if (userName.ToUpper() == instructor.username.ToUpper()) counter++;
 
 
             }

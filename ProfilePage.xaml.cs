@@ -39,16 +39,28 @@ namespace ExamSystem
         {
            
             List<STUDENT> students = _context.STUDENTs.ToList();
-
+            List<INSTRUCTOR> instructors = _context.INSTRUCTORs.ToList();
+            
             foreach (STUDENT student in students) {
-                if (student.neptun_id == this.CurrentUser.userName) {
+                if (student.neptun_id.ToUpper() == this.CurrentUser.userName.ToUpper())
+                {
                     lbUserName.Content = student.neptun_id;
                     lbFirstName.Content = student.first_name;
                     lbLastName.Content = student.last_name;
                     lbState.Content = student.user_status;
                 }
             }
-          
+            foreach (INSTRUCTOR instructor in instructors)
+            {
+                if (instructor.username.ToUpper() == this.CurrentUser.userName.ToUpper())
+                {
+                    lbUserName.Content = instructor.username;
+                    lbFirstName.Content = instructor.first_name;
+                    lbLastName.Content = instructor.last_name;
+                    lbState.Content = instructor.user_status;
+                }
+            }
+
 
         }
 

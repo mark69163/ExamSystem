@@ -40,6 +40,8 @@ namespace Model
 
         public string user_status { get; set; }
 
+        public string username { get; set; }
+
         public virtual IList<EXAM> EXAMs { get; set; }
 
         #region Extensibility Method Definitions

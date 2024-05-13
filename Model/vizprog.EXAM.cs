@@ -42,7 +42,7 @@ namespace Model
 
         public int? time_limit { get; set; }
 
-
+        public string imgSource { get; set; }
 
         public virtual IList<STUDENT> STUDENTs { get; set; }
 
