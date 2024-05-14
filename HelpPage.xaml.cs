@@ -395,7 +395,7 @@ namespace ExamSystem
                         command.Parameters.AddWithValue("@Question", txtQuestion.Text);
                         command.Parameters.AddWithValue("@Answers", answers);
                         command.Parameters.AddWithValue("@Solution", cmbSolution.SelectedItem);
-                        command.Parameters.AddWithValue("@PointValue", 1); // Minden kérdés 1 pontot ér
+                        command.Parameters.AddWithValue("@PointValue", 5); 
                         command.Parameters.AddWithValue("@CourseId", GetSelectedExamId(examComboBox3.SelectedItem.ToString()));
 
                         command.ExecuteNonQuery();

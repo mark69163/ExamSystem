@@ -31,6 +31,7 @@
                     <Button Content="Create" Click="AddExam_Click" HorizontalAlignment="Center" Margin="0 20 10 20"/>
                     <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Delete Exam" Margin="0 0 10 20"/>
                     <StackPanel>
+                        <Label Margin="0 0 10 0" Width="200" Content="Select Exam:"/>
                         <ComboBox Width="200" HorizontalAlignment="Center" x:Name="examComboBox2" Margin="0 0 10 20"/>
                         <Button Width="200" Content="Delete" Click="DeleteExam_Click" HorizontalAlignment="Center" Margin="0 0 10 20"/>
                     </StackPanel>
@@ -46,8 +47,10 @@
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Assign exam to student" Margin="0 0 10 20"/>
                             <StackPanel>
-                                <ComboBox Width="200" x:Name="studentComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
-                                <ComboBox Width="200" x:Name="examComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
+                            <Label Margin="0 0 10 0" Width="200" Content="Select Student:"/>
+                            <ComboBox Width="200" x:Name="studentComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
+                            <Label Margin="0 0 10 0" Width="200" Content="Select Exam:"/>
+                            <ComboBox Width="200" x:Name="examComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
                                 <Button Width="200" Content="Assign" Margin="0 0 10 0" Click="AssignButton_Click" HorizontalAlignment="Center"/>
                             </StackPanel>
                             <Label x:Name="lblError" Foreground="Red" Margin="0 0 10 0" HorizontalAlignment="Center"/>
