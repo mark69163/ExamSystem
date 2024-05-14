@@ -45,41 +45,67 @@ namespace ExamSystem
         {
             try
             {
+                bool vanilyen = false;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = @"INSERT INTO EXAMs (title, level, kredit_value, start_time, end_time, time_limit, imgSource) 
-                   VALUES (@Title, @Level, @KreditValue, @StartTime, @EndTime, @TimeLimit, @imgSource);
-                   SELECT SCOPE_IDENTITY();";
+                    string sql = @"SELECT course_id FROM EXAMs WHERE title = @Title";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@Title", txtTitle.Text);
-                        command.Parameters.AddWithValue("@Level", txtLevel.Text);
-                        command.Parameters.AddWithValue("@KreditValue", int.Parse(txtKreditValue.Text));
-                        command.Parameters.AddWithValue("@StartTime", dpStartTime.SelectedDate);
-                        command.Parameters.AddWithValue("@EndTime", dpEndTime.SelectedDate);
-                        command.Parameters.AddWithValue("@TimeLimit", int.Parse(txtTimeLimit.Text));
-                        command.Parameters.AddWithValue("@imgSource", "/img/noimage.png");
-
-                        // Az új vizsga azonosítójának lekérdezése
-                        int newExamId = Convert.ToInt32(command.ExecuteScalar());
-
-                        // Az új vizsga azonosítójának beállítása
-                        int examCourseId = newExamId;
-
-                        MessageBox.Show("Vizsga sikeresen hozzáadva az adatbázishoz.");
-
-                        // Oktatót is hozzáadjuk.
-                        string insertInstructorSql = "INSERT INTO EXAMs_INSTRUCTORS (course_id, profid) VALUES (@CourseId, @ProfId)";
-                        using (SqlCommand insertInstructorCommand = new SqlCommand(insertInstructorSql, connection))
+                        object result = command.ExecuteScalar();
+                        if (result == null) // Ha nincs még ilyen
                         {
-                            insertInstructorCommand.Parameters.AddWithValue("@CourseId", examCourseId);
-                            insertInstructorCommand.Parameters.AddWithValue("@ProfId", GetInstructorID(currentUser.userName));
-
-                            insertInstructorCommand.ExecuteNonQuery();
+                            vanilyen = false;
                         }
-                        LoadExams(currentUser.userName);
+                        else
+                        {
+                            MessageBox.Show("Már létezik vizsga ezzel a névvel.");
+                            vanilyen = true;
+                        }
+                    }
+                }
+                if (vanilyen == false)
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string sql = @"INSERT INTO EXAMs (title, level, kredit_value, start_time, end_time, time_limit, imgSource) 
+                   VALUES (@Title, @Level, @KreditValue, @StartTime, @EndTime, @TimeLimit, @imgSource);
+                   SELECT SCOPE_IDENTITY();";
+
+
+
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Title", txtTitle.Text);
+                            command.Parameters.AddWithValue("@Level", txtLevel.Text);
+                            command.Parameters.AddWithValue("@KreditValue", int.Parse(txtKreditValue.Text));
+                            command.Parameters.AddWithValue("@StartTime", dpStartTime.SelectedDate);
+                            command.Parameters.AddWithValue("@EndTime", dpEndTime.SelectedDate);
+                            command.Parameters.AddWithValue("@TimeLimit", int.Parse(txtTimeLimit.Text));
+                            command.Parameters.AddWithValue("@imgSource", "/img/noimage.png");
+
+                            // Az új vizsga azonosítójának lekérdezése
+                            int newExamId = Convert.ToInt32(command.ExecuteScalar());
+
+                            // Az új vizsga azonosítójának beállítása
+                            int examCourseId = newExamId;
+
+                            MessageBox.Show("Vizsga sikeresen hozzáadva az adatbázishoz.");
+
+                            // Oktatót is hozzáadjuk.
+                            string insertInstructorSql = "INSERT INTO EXAMs_INSTRUCTORS (course_id, profid) VALUES (@CourseId, @ProfId)";
+                            using (SqlCommand insertInstructorCommand = new SqlCommand(insertInstructorSql, connection))
+                            {
+                                insertInstructorCommand.Parameters.AddWithValue("@CourseId", examCourseId);
+                                insertInstructorCommand.Parameters.AddWithValue("@ProfId", GetInstructorID(currentUser.userName));
+
+                                insertInstructorCommand.ExecuteNonQuery();
+                            }
+                            LoadExams(currentUser.userName);
+                        }
                     }
                 }
 
@@ -333,7 +359,7 @@ namespace ExamSystem
 
                     // Kapcsolatok törlése a STUDENTs_EXAMs táblából
                     string deleteStudentExamsSql = @"DELETE FROM STUDENTs_EXAMs 
-                                     WHERE course_id = (SELECT course_id FROM EXAMs WHERE title = @Title)";
+                                     WHERE course_id = (SELECT TOP 1 course_id FROM EXAMs WHERE title = @Title)";
 
                     using (SqlCommand deleteStudentExamsCommand = new SqlCommand(deleteStudentExamsSql, connection))
                     {
@@ -343,12 +369,21 @@ namespace ExamSystem
 
                     // Kapcsolatok törlése az EXAMs_INSTRUCTORs táblából
                     string deleteInstructorsSql = @"DELETE FROM EXAMs_INSTRUCTORs 
-                                    WHERE course_id = (SELECT course_id FROM EXAMs WHERE title = @Title)";
+                                    WHERE course_id = (SELECT TOP 1 course_id FROM EXAMs WHERE title = @Title)";
 
                     using (SqlCommand deleteInstructorsCommand = new SqlCommand(deleteInstructorsSql, connection))
                     {
                         deleteInstructorsCommand.Parameters.AddWithValue("@Title", selectedExam);
                         deleteInstructorsCommand.ExecuteNonQuery();
+                    }
+
+                    string deleteProgressesSql = @"DELETE FROM QUESTIONs
+                                    WHERE course_id = (SELECT TOP 1 course_id FROM EXAMs WHERE title = @Title)";
+
+                    using (SqlCommand deleteProgressesCommand = new SqlCommand(deleteProgressesSql, connection))
+                    {
+                        deleteProgressesCommand.Parameters.AddWithValue("@Title", selectedExam);
+                        deleteProgressesCommand.ExecuteNonQuery();
                     }
 
                     // Vizsga törlése az EXAMs táblából
