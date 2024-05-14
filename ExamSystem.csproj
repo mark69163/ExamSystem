@@ -20,6 +20,7 @@
     <None Remove="img\gamf.png" />
     <None Remove="img\logo.png" />
     <None Remove="img\logo2.png" />
+    <None Remove="img\noimage.png" />
     <None Remove="img\physicsExam.png" />
     <None Remove="img\porgrammingExam.png" />
     <None Remove="img\programmingExam.png" />
@@ -34,6 +35,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="img\databaseExam.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\noimage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="img\physicsExam.png">

@@ -16,6 +16,7 @@ using System.Data.SqlClient;
 using ExamSystem.Logic;
 using Model;
 using static System.Windows.Forms.AxHost;
+using Microsoft.VisualBasic.ApplicationServices;
 
 
 
@@ -28,12 +29,15 @@ namespace ExamSystem
     {
         public LoggedInUser currentUser { get; }
         Model.Model _context;
+        private int selectedExamId; // Az aktuális vizsga azonosítója
+        int instructorID = -1;
         public HelpPage(LoggedInUser user)
         {
             InitializeComponent();
             currentUser = user;
             LoadStudents();
             LoadExams(currentUser.userName);
+            LoadSolutionOptions();
         }
         private string connectionString = "Server=localhost;Database=examSystem;Trusted_Connection=True;";
 
@@ -44,8 +48,9 @@ namespace ExamSystem
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sql = @"INSERT INTO EXAMs (title, level, kredit_value, start_time, end_time, time_limit) 
-                                   VALUES (@Title, @Level, @KreditValue, @StartTime, @EndTime, @TimeLimit)";
+                    string sql = @"INSERT INTO EXAMs (title, level, kredit_value, start_time, end_time, time_limit, imgSource) 
+                   VALUES (@Title, @Level, @KreditValue, @StartTime, @EndTime, @TimeLimit, @imgSource);
+                   SELECT SCOPE_IDENTITY();";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -55,11 +60,29 @@ namespace ExamSystem
                         command.Parameters.AddWithValue("@StartTime", dpStartTime.SelectedDate);
                         command.Parameters.AddWithValue("@EndTime", dpEndTime.SelectedDate);
                         command.Parameters.AddWithValue("@TimeLimit", int.Parse(txtTimeLimit.Text));
+                        command.Parameters.AddWithValue("@imgSource", "/img/noimage.png");
 
-                        command.ExecuteNonQuery();
+                        // Az új vizsga azonosítójának lekérdezése
+                        int newExamId = Convert.ToInt32(command.ExecuteScalar());
+
+                        // Az új vizsga azonosítójának beállítása
+                        int examCourseId = newExamId;
+
                         MessageBox.Show("Vizsga sikeresen hozzáadva az adatbázishoz.");
+
+                        // Oktatót is hozzáadjuk.
+                        string insertInstructorSql = "INSERT INTO EXAMs_INSTRUCTORS (course_id, profid) VALUES (@CourseId, @ProfId)";
+                        using (SqlCommand insertInstructorCommand = new SqlCommand(insertInstructorSql, connection))
+                        {
+                            insertInstructorCommand.Parameters.AddWithValue("@CourseId", examCourseId);
+                            insertInstructorCommand.Parameters.AddWithValue("@ProfId", GetInstructorID(currentUser.userName));
+
+                            insertInstructorCommand.ExecuteNonQuery();
+                        }
+                        LoadExams(currentUser.userName);
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -170,6 +193,8 @@ namespace ExamSystem
                                 exams.Add(reader.GetString(0));
                             }
                             examComboBox.ItemsSource = exams;
+                            examComboBox2.ItemsSource = exams;
+                            examComboBox3.ItemsSource = exams;
                         }
                     }
                 }
@@ -238,6 +263,9 @@ namespace ExamSystem
                             return;
                         }
                     }
+                    // Ellenőrizzük, hogy az oktató már hozzá van-e rendelve a vizsgához az EXAMs_INSTRUCTORS táblában
+
+                    
 
                     string insertSql = "INSERT INTO STUDENTs_EXAMs (neptun_id, course_id) VALUES (@NeptunId, @CourseId)";
                     using (SqlCommand command = new SqlCommand(insertSql, connection))
@@ -247,6 +275,7 @@ namespace ExamSystem
 
                         command.ExecuteNonQuery();
                         MessageBox.Show("Vizsga sikeresen hozzáadva a tanulóhoz.");
+                        LoadExams(currentUser.userName);
                     }
                 }
             }
@@ -255,6 +284,181 @@ namespace ExamSystem
                 MessageBox.Show("Hiba történt a hozzárendelés közben: " + ex.Message);
             }
         }
+
+        private int GetInstructorID(string username)
+        {
+            int instructorID = -1; // Alapértelmezett érték, ha nem találjuk meg az oktatót
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "SELECT profid FROM INSTRUCTORS WHERE username = @Username";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", username);
+
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            instructorID = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt az oktató azonosítójának lekérdezése közben: " + ex.Message);
+            }
+
+            return instructorID;
+        }
+
+        private void DeleteExam_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedExam = examComboBox2.SelectedItem as string;
+            if (selectedExam == null)
+            {
+                MessageBox.Show("Válassz ki egy vizsgát a törléshez!");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Kapcsolatok törlése a STUDENTs_EXAMs táblából
+                    string deleteStudentExamsSql = @"DELETE FROM STUDENTs_EXAMs 
+                                     WHERE course_id = (SELECT course_id FROM EXAMs WHERE title = @Title)";
+
+                    using (SqlCommand deleteStudentExamsCommand = new SqlCommand(deleteStudentExamsSql, connection))
+                    {
+                        deleteStudentExamsCommand.Parameters.AddWithValue("@Title", selectedExam);
+                        deleteStudentExamsCommand.ExecuteNonQuery();
+                    }
+
+                    // Kapcsolatok törlése az EXAMs_INSTRUCTORs táblából
+                    string deleteInstructorsSql = @"DELETE FROM EXAMs_INSTRUCTORs 
+                                    WHERE course_id = (SELECT course_id FROM EXAMs WHERE title = @Title)";
+
+                    using (SqlCommand deleteInstructorsCommand = new SqlCommand(deleteInstructorsSql, connection))
+                    {
+                        deleteInstructorsCommand.Parameters.AddWithValue("@Title", selectedExam);
+                        deleteInstructorsCommand.ExecuteNonQuery();
+                    }
+
+                    // Vizsga törlése az EXAMs táblából
+                    string deleteExamSql = @"DELETE FROM EXAMs 
+                              WHERE title = @Title";
+
+                    using (SqlCommand deleteExamCommand = new SqlCommand(deleteExamSql, connection))
+                    {
+                        deleteExamCommand.Parameters.AddWithValue("@Title", selectedExam);
+                        int rowsAffected = deleteExamCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("A vizsga sikeresen törölve lett.");
+                            // Frissítsd újra a legördülő menüt, hogy az új állapotot tükrözze
+                            LoadExams(currentUser.userName);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nem sikerült törölni a vizsgát.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba történt a vizsga törlése közben: " + ex.Message);
+            }
+        }
+        private void AddQuestion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = @"INSERT INTO QUESTIONs (question, answers, solution, point_value, course_id) 
+                               VALUES (@Question, @Answers, @Solution, @PointValue, @CourseId)";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Összeállítjuk a válaszokat
+                        string answers = $"{txtAnswer1.Text};{txtAnswer2.Text};{txtAnswer3.Text};{txtAnswer4.Text}";
+
+                        command.Parameters.AddWithValue("@Question", txtQuestion.Text);
+                        command.Parameters.AddWithValue("@Answers", answers);
+                        command.Parameters.AddWithValue("@Solution", cmbSolution.SelectedItem);
+                        command.Parameters.AddWithValue("@PointValue", 1); // Minden kérdés 1 pontot ér
+                        command.Parameters.AddWithValue("@CourseId", GetSelectedExamId(examComboBox3.SelectedItem.ToString()));
+
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("A kérdés sikeresen hozzáadva az adatbázishoz.");
+                        ClearFields();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt a kérdés hozzáadása során: {ex.Message}");
+            }
+        }
+
+        private int GetSelectedExamId(string selectedItem)
+        {
+            if (selectedItem != null)
+            {
+                try
+                {
+                    string selectedExam = selectedItem;
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string sql = "SELECT course_id FROM EXAMs WHERE title = @Title";
+
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            command.Parameters.AddWithValue("@Title", selectedExam);
+                            object result = command.ExecuteScalar();
+                            if (result != null)
+                            {
+                                return Convert.ToInt32(result);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba történt az azonosító lekérésekor: {ex.Message}");
+                }
+            }
+            return -1;
+        }
+
+        private void ClearFields()
+        {
+            txtQuestion.Clear();
+            txtAnswer1.Clear();
+            txtAnswer2.Clear();
+            txtAnswer3.Clear();
+            txtAnswer4.Clear();
+        }
+        private void LoadSolutionOptions()
+        {
+            // Feltöltjük a megoldás lehetőségeket (1, 2, 3, 4) a ComboBox-ban
+            for (int i = 1; i <= 4; i++)
+            {
+                cmbSolution.Items.Add(i);
+            }
+            cmbSolution.SelectedIndex = 0; // Az alapértelmezett megoldás az első válasz lesz
+        }
+
 
     }
 

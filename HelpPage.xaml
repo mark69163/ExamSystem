@@ -8,31 +8,85 @@
       mc:Ignorable="d" 
       d:DesignHeight="400" d:DesignWidth="800"
       Title="HelpPage">
+
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid>
-        <TextBlock FontSize="30" Text="" />
-        <StackPanel Margin="10">
-            <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Új vizsga hozzáadása" Margin="0 0 0 20"/>
-            <TextBox Width="200" HorizontalAlignment="Center" Foreground ="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtTitle" Text="Enter Title" Margin="0 0 0 10"/>
-            <TextBox Width="200" HorizontalAlignment="Center" Foreground ="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtLevel" Text="Level" Margin="0 0 0 10"/>
-            <TextBox Width="200" HorizontalAlignment="Center" Foreground ="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtKreditValue" Text="Kredit Value" Margin="0 0 0 10"/>
-            <DatePicker Width="200"  SelectedDate="{x:Static sys:DateTime.Now}" Margin="0 0 0 10" Name="dpStartTime"/>
-            <DatePicker Width="200"  SelectedDate="{x:Static sys:DateTime.Now}" Margin="0 0 0 10" Name="dpEndTime"/>
-            <TextBox Width="200" HorizontalAlignment="Center" Foreground ="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtTimeLimit" Text="Time Limit" Margin="0 0 0 20"/>
-            <Button Content="Hozzáadás" Click="AddExam_Click" Margin="0 0 0 20" HorizontalAlignment="Center"/>
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Vizsga tanulóhoz rendelése" Margin="0 0 0 20"/>
+            <!-- Új vizsga hozzáadása -->
+            <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Margin="0 0 20 0">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Create New Exam" Margin="0 0 10 20"/>
+                    <StackPanel>
+                        <TextBox Width="200" HorizontalAlignment="Center" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtTitle" Text="Enter Title" Margin="0 0 10 0"/>
+                        <TextBox Width="200" HorizontalAlignment="Center" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtLevel" Text="Level" Margin="0 0 10 0"/>
+                        <TextBox Width="200" HorizontalAlignment="Center" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtKreditValue" Text="Kredit Value" Margin="0 0 10 0"/>
+                        <DatePicker Width="200" SelectedDate="{x:Static sys:DateTime.Now}" Margin="0 0 10 0" Name="dpStartTime"/>
+                        <DatePicker Width="200" SelectedDate="{x:Static sys:DateTime.Now}" Margin="0 0 10 0" Name="dpEndTime"/>
+                        <TextBox Width="200" HorizontalAlignment="Center" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" x:Name="txtTimeLimit" Text="Time Limit" Margin="0 0 10 0"/>
+                    </StackPanel>
+                    <Button Content="Create" Click="AddExam_Click" HorizontalAlignment="Center" Margin="0 20 10 20"/>
+                    <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Delete Exam" Margin="0 0 10 20"/>
+                    <StackPanel>
+                        <ComboBox Width="200" HorizontalAlignment="Center" x:Name="examComboBox2" Margin="0 0 10 20"/>
+                        <Button Width="200" Content="Delete" Click="DeleteExam_Click" HorizontalAlignment="Center" Margin="0 0 10 20"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
 
-                <ComboBox Width="200" x:Name="studentComboBox" Grid.Column="0" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <!-- Vizsga törlése -->
+            <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Margin="0 0 20 0">
+                <StackPanel>
+                    
+                    <!-- Vizsga tanulóhoz rendelése -->
+                    
+                        <StackPanel>
+                            <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Assign exam to student" Margin="0 0 10 20"/>
+                            <StackPanel>
+                                <ComboBox Width="200" x:Name="studentComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
+                                <ComboBox Width="200" x:Name="examComboBox" Margin="0 0 10 0" HorizontalAlignment="Center"/>
+                                <Button Width="200" Content="Assign" Margin="0 0 10 0" Click="AssignButton_Click" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            <Label x:Name="lblError" Foreground="Red" Margin="0 0 10 0" HorizontalAlignment="Center"/>
+                        <StackPanel>
+                            
 
-           
-            <!-- Exam ComboBox -->
-                <ComboBox Width="200" x:Name="examComboBox" Grid.Column="2" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <!-- Assign Button -->
-            <Button Width="200" Content="Assign" Grid.Column="1" Margin="10" VerticalAlignment="Center" Click="AssignButton_Click"/>
+                            <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Add new question to exam" Margin="0 0 20 10"/>
+                            <Label />
+                            <Label Margin="0 0 10 0" Width="200" Content="Select Exam:"/>
+                            <ComboBox Width="200" x:Name="examComboBox3" Grid.Row="0" Margin="0 0 10 0" />
 
-                <Label x:Name="lblError" Foreground="Red" Margin="0 10 0 0"/>
-        </StackPanel>
+                            <Label Width="200" Content="Question:" Grid.Row="1" Margin="0 0 10 0"/>
+                            <TextBox Width="200" x:Name="txtQuestion" Grid.Row="1" Margin="0 0 10 0"/>
+
+                            <Label Width="200" Content="Answer 1:" Grid.Row="2" Margin="0 0 10 0"/>
+                            <TextBox Width="200" x:Name="txtAnswer1" Grid.Row="2" Margin="0 0 10 0"/>
+
+                            <Label Width="200" Content="Answer 2:" Grid.Row="3" Margin="0 0 10 0"/>
+                            <TextBox Width="200" x:Name="txtAnswer2" Grid.Row="3" Margin="0 0 10 0"/>
+
+                            <Label Width="200" Content="Answer 3:" Grid.Row="4" Margin="0 0 10 0"/>
+                            <TextBox Width="200" x:Name="txtAnswer3" Grid.Row="4" Margin="0 0 10 0"/>
+
+                            <Label Width="200" Content="Answer 4:" Grid.Row="5" Margin="0 0 10 0"/>
+                            <TextBox Width="200" x:Name="txtAnswer4" Grid.Row="5" Margin="0 0 10 0" />
+
+                            <Label Width="200" Content="Solution:" Grid.Row="6" Margin="0 0 10 0"/>
+                            <ComboBox Width="200" x:Name="cmbSolution" Grid.Row="6" Margin="0 0 10 0"/>
+                            
+                            <Button  Width="200" Content="Add Question" Click="AddQuestion_Click" Grid.Row="6" Margin="0 0 10 0"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                    
+                </StackPanel>
+            </Border>
+
+            
         </Grid>
     </ScrollViewer>
 </Page>
+
