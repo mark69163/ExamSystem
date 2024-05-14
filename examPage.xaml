@@ -9,11 +9,12 @@
       Title="examPage">
 
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" x:Name="grExamMenu" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        
 
         <Grid>
          
@@ -52,20 +53,20 @@
                     <TextBlock x:Name="tbAnswer1" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
-                <Button x:Name="btAnswer2" Grid.Column="0" Grid.Row="3"  FontSize="20" FontWeight="Bold" Margin="20,5,5,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer2_Click">
+                <Button x:Name="btAnswer2" Grid.Column="0" Grid.Row="3"  FontSize="20" FontWeight="Bold" Margin="20,10,5,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer2_Click">
                     <TextBlock x:Name="tbAnswer2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
-                <Button x:Name="btAnswer3" Grid.Column="1" Grid.Row="3" FontSize="20" FontWeight="Bold" Margin="5,5,20,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer3_Click">
+                <Button x:Name="btAnswer3" Grid.Column="1" Grid.Row="3" FontSize="20" FontWeight="Bold" Margin="5,10,20,20" Padding="10" Background="white" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btAnswer3_Click">
                     <TextBlock x:Name="tbAnswer3" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"/>
                 </Button>
 
             </Grid>
+            <TextBlock x:Name="tbCountdown" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap" Text=""/>
 
 
             <Frame x:Name="frExamBottomNavigation" Grid.Row="1" Grid.Column="1" Margin="10,20,10,10" Padding="10" Background="Wheat" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
             <TextBox x:Name="tbQestion" IsEnabled="False" Grid.Row="1" Grid.Column="1" FontSize="15"  Margin="20,30,20,20"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White"/>
-
         </Grid>
 
 

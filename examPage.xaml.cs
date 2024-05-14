@@ -13,7 +13,6 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using ExamSystem.Logic;
+using Microsoft.Identity.Client;
 using Model;
 
 namespace ExamSystem
@@ -43,6 +43,8 @@ namespace ExamSystem
         private string examName;
         List<QUESTION> relevantQuestions;
 
+        private int? remainingTime = null; // Kezdeti maradék idő másodpercben
+        private Task countdownTask; // A visszaszámláló feladat
 
         //konstruktor
         public examPage(string examName, LoggedInUser user, int time_limit)
@@ -55,6 +57,7 @@ namespace ExamSystem
             this.examName=examName;
 
             loadExam();
+            StartCountdown();
 
 
         }
@@ -70,7 +73,9 @@ namespace ExamSystem
             {
                 if (exam.title == examName)
                 {
-                    courseId = exam.course_id; break;
+                    courseId = exam.course_id;
+                    remainingTime = exam.time_limit;
+                    break;
                 }
             }
 
@@ -189,7 +194,7 @@ namespace ExamSystem
 
             if (questionCounter < relevantQuestions.Count)
             {
-                if (buttonPressed == relevantQuestions[questionCounter-1].solution)
+                if (buttonPressed == relevantQuestions[questionCounter - 1].solution)
                 {
                     correctCounter += relevantQuestions[questionCounter - 1].point_value;
 
@@ -200,12 +205,15 @@ namespace ExamSystem
 
             //done with exam
             else
+                DoneWithExam();
+        }
+        public void DoneWithExam()
             {
                 //get completion precentage
                 int maxScore = 0;
-                foreach (QUESTION question in relevantQuestions) maxScore+=question.point_value;
+                foreach (QUESTION question in relevantQuestions) maxScore += question.point_value;
 
-                float completion = correctCounter*100 / maxScore;
+                float completion = correctCounter * 100 / maxScore;
 
                 //isert to db
                 // az entity-vel nem mukodik...
@@ -213,7 +221,8 @@ namespace ExamSystem
                 //manual check az 5-ös korzusra (villanytan)
                 //UpdateResult("B2TN3S", 5, correctCounter*100/maxScore);
 
-                try {
+                try
+                {
                     UpdateResult(currentUser.userName.ToString(), courseId, (int)completion);
                 }
                 catch (Exception ex)
@@ -227,9 +236,6 @@ namespace ExamSystem
                 this.NavigationService.Navigate(new ExamsPage(currentUser));
             }
 
-
-
-        }
 
         public void UpdateResult(string neptunId, int courseId, int? result)
         {
@@ -301,6 +307,34 @@ namespace ExamSystem
 
         //a kivalasztott kerdes fuggvenyeben jelenitjuk meg a kerdeseket
 
+
+
+        private void StartCountdown()
+        {
+            countdownTask = Task.Run(async () =>
+            {
+                while (remainingTime > 0)
+                {
+                    await Task.Delay(1000); // 1 másodperc várakozás
+                    remainingTime--;
+
+                    // Frissítjük a TextBox tartalmát az UI szálon
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        tbCountdown.Text = $"Time left: {remainingTime} s";
+                    });
+                }
+
+                // Ha lejár az idő, visszatérünk az ExamsPage-re
+                if (remainingTime <= 0)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        DoneWithExam();
+                    });
+                }
+            });
+        }
         private void lbQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
      
